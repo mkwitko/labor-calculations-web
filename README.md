@@ -1,4 +1,4 @@
-# JurisPro Web
+# Labor Calculations Web
 
 Web client for a Brazilian labor-law case management and settlement calculator: public landing pages and calculators, plus an authenticated workspace for law firms.
 
@@ -87,7 +87,7 @@ swagger.json      API contract used for codegen
 
 ## Related repositories
 
-- [jurispro-api](https://github.com/mkwitko/jurispro-api): backend for this client
+- [labor-calculations-api](https://github.com/mkwitko/labor-calculations-api): backend for this client
 
 ## License
 
