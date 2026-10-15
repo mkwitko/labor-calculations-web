@@ -16,19 +16,55 @@ Web client for a Brazilian labor-law case management and settlement calculator: 
 
 ## Architecture
 
+System context: this repo is the only browser client of the labor-calculations backend.
+
 ```mermaid
 flowchart LR
-  Browser --> Worker["Cloudflare Worker (/lxl/* proxy)"]
-  Browser --> Assets["Static SPA assets"]
-  Worker -->|reverse proxy| PostHog
-  Browser -->|axios + React Query| API["Backend REST API"]
-  Browser --> Sentry
-  Swagger["swagger.json"] -->|orval| Client["src/http/generated hooks"]
-  Client --> Browser
+  Lawyer([Law firm user]) --> Web
+  Worker([Worker / HR visitor]) --> Web
+  Client([Client portal user]) --> Web
+  subgraph Edge[Cloudflare Worker + static assets]
+    Web[labor-calculations-web<br/>React SPA, prerendered public pages]
+    Proxy["/lxl/* analytics proxy<br/>worker/index.ts"]
+  end
+  Web -->|axios, cookies, x-session-id| API[labor-calculations-api]
+  API -->|SSE message stream| Web
+  Proxy --> PostHog
+  Web --> Sentry
+  API -.->|swagger.json, Orval| Web
+```
+
+Layers inside this repo:
+
+```mermaid
+flowchart TD
+  Router["Lazy routes, 4 layout groups<br/>src/router/index.tsx"] --> Pages["Pages: landing, public, portal, protected<br/>src/pages"]
+  Pages --> Comp["Shared components, gates, error boundaries<br/>src/components"]
+  Pages --> Gen["Orval hooks (generated, gitignored)<br/>src/http/generated"]
+  Comp --> Gen
+  Gen --> Axios["Axios instance, 401 handling<br/>src/lib/api.ts"]
+  Pages --> Stream["SSE hook with backoff<br/>src/components/messaging"]
+  Env["Zod env check<br/>src/env"] -.-> Axios
+```
+
+Main flow, a public calculation (`src/pages/public/calculadora`):
+
+```mermaid
+sequenceDiagram
+  participant V as Visitor
+  participant W as Wizard (steps.ts)
+  participant A as API
+  V->>W: answer steps (audience, dates, salary, verbas)
+  W->>A: POST public calculations (usePostPublicCalculations)
+  A-->>W: breakdown by verba
+  W-->>V: result (worker view or lawyer view), share link
+  V->>A: open shared calculation or send to a lawyer
 ```
 
 - The API client is generated from `swagger.json` with Orval (one file per OpenAPI tag); it is not committed.
-- Pages are split by audience: `src/pages/{landing,public,portal,protected}`.
+- Pages are split by audience: `src/pages/{landing,public,portal,protected}`, each under its own lazy layout.
+- A 401 on any request clears the session and redirects to the lawyer login or the client-portal login depending on the request URL (`src/lib/api.ts`).
+- The message thread listens to a server-sent-events stream and falls back to polling while it is down (`src/components/messaging/use-message-stream.ts`).
 - A small Cloudflare Worker exists only to reverse-proxy analytics under an opaque path; everything else is static assets with SPA fallback.
 - Public pages are prerendered at build time (`scripts/prerender.mjs`).
 
