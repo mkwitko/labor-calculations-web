@@ -16,7 +16,7 @@ Web client for a Brazilian labor-law case management and settlement calculator: 
 
 ## Architecture
 
-System context: this repo is the only browser client of the labor-calculations backend.
+System context: this repo is the browser client of the labor-calculations backend.
 
 ```mermaid
 flowchart LR
