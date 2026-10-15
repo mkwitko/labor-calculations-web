@@ -1,0 +1,36 @@
+export type CloneSource = {
+  clientName?: string;
+  clientDocument?: string | null;
+  terminationType?: string;
+  calculationVersion?: string;
+  startDate?: string | Date;
+  endDate?: string | Date;
+  priorNoticeWorked?: boolean;
+  priorNoticeDate?: string | Date | null;
+  baseSalary?: number;
+  lastSalary?: number;
+  lastThreeSalariesAvg?: number;
+  unpaid13ths?: number;
+  vacationCount?: number;
+  vacationVencidasCount?: number;
+  extraHours?: number;
+  nightHours?: number;
+  insalubrityLevel?: number;
+  dangerousWork?: boolean;
+  applyArt477Fine?: boolean;
+  observations?: string | null;
+  filingDate?: string | Date | null;
+  liquidationDate?: string | Date | null;
+  nightAdditionalPercent?: number;
+  satRate?: number;
+  employerInssRate?: number;
+  honorariosRate?: number;
+  irpfDependents?: number;
+  salaryHistory?: {
+    id?: string;
+    month: string | Date;
+    baseSalary: number;
+    lastSalary: number;
+  }[];
+  unpaidSalaries?: { id?: string; month: string | Date; daysWorked: number }[];
+};

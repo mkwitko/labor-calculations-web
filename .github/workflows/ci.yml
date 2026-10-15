@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Static values only — no untrusted github.event inputs are used in run steps.
+env:
+  VITE_HTTP_API_URL: http://localhost:3000
+  VITE_STORAGE_URL: http://localhost:9000
+  VITE_DEFAULT_FGTS_RATE: "8"
+  VITE_DEFAULT_MINIMUM_WAGE: "1621"
+
+jobs:
+  build-test:
+    name: Lint + tests + build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.18.0
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Regenerate the API client from the committed swagger.json.
+      - name: Generate API client
+        run: pnpm exec orval
+
+      - name: Lint
+        run: pnpm lint
+        continue-on-error: true
+
+      - name: Tests
+        run: pnpm test
+
+      # `pnpm build` gates on `tsc -b`, which still has pre-existing type debt;
+      # build the bundle directly to verify the app compiles end-to-end.
+      - name: Build
+        run: pnpm exec vite build

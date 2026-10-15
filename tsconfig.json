@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    /* Core */
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+
+    /* Performance */
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+
+    /* Strictness (keep, but controlled) */
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    /* Paths */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    /* Important */
+    "noEmit": true
+  },
+  "include": ["src"]
+}

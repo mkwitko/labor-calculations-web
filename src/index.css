@@ -1,0 +1,287 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+@import "@fontsource/merriweather";
+@import "@fontsource-variable/geist"; /* serif for legal text */
+
+@custom-variant dark (&:is(.dark *));
+
+html, body, #root {
+  height: 100%;
+  overflow: auto;
+}
+
+/* =========================
+   THEME (LEGAL SYSTEM)
+========================= */
+
+:root {
+    /* Base (paper + ink) */
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+
+    /* Cards */
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+
+    /* Popovers */
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+
+    /* Primary (deep legal blue) */
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+
+    /* Secondary */
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+
+    /* Muted */
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+
+    /* Accent (gold) */
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+
+    /* Status */
+    --destructive: oklch(0.577 0.245 27.325);
+
+    /* Borders (document feel) */
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+
+    /* Charts */
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+
+    /* Radius (more formal) */
+    --radius: 0.625rem;
+
+    /* Status badges */
+    --status-concluded: oklch(0.55 0.15 145);
+    --status-draft: oklch(0.65 0.15 75);
+    --status-review: oklch(0.55 0.15 255);
+
+    /* Sidebar */
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* =========================
+   DARK MODE (LEGAL STYLE)
+========================= */
+
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+
+    /* Gold becomes primary */
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+
+    --destructive: oklch(0.704 0.191 22.216);
+
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+
+    --status-concluded: oklch(0.6 0.15 145);
+    --status-draft: oklch(0.7 0.15 75);
+    --status-review: oklch(0.6 0.15 255);
+
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+}
+
+/* =========================
+   THEME MAPPING
+========================= */
+
+@theme inline {
+    --font-sans: 'Geist Variable', sans-serif;
+    --font-serif: 'Merriweather', serif;
+
+    --color-status-concluded: var(--status-concluded);
+    --color-status-draft: var(--status-draft);
+    --color-status-review: var(--status-review);
+
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+
+    /* Radius scale */
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+    --font-heading: var(--font-sans);
+}
+
+/* =========================
+   BASE STYLES
+========================= */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Better reading for legal content */
+  .legal-text {
+    @apply font-serif leading-relaxed text-[15px];
+  }
+
+  /* Section divider (use a lot in legal UI) */
+  .divider {
+    @apply border-t border-border my-4;
+  }
+
+  /* Subtle card feel (less "SaaS", more "document") */
+  .document-card {
+    @apply bg-card border border-border rounded-md shadow-sm;
+  }
+}
+/* ─── Accessibility ───────────────────────────────────────────────────────── */
+
+/* Skip-to-content link: off-screen until focused via keyboard (Tab). */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3.5rem;
+  z-index: 100;
+  border-radius: 0.5rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 0.5rem;
+}
+
+/* Respect users who prefer reduced motion (vestibular safety). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Popover dos tours (driver.js). O padrão da biblioteca é ~300px, estreito
+   demais para explicação jurídica: o texto virava três palavras por linha e o
+   tour parecia enxuto. `popoverClass: "jurispro-tour"` em use-product-tour.ts. */
+.driver-popover.jurispro-tour {
+  max-width: 30rem;
+  min-width: 20rem;
+  padding: 1.25rem 1.375rem;
+}
+.driver-popover.jurispro-tour .driver-popover-title {
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  margin-bottom: 0.5rem;
+}
+.driver-popover.jurispro-tour .driver-popover-description {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+/* Em telefone a largura é a da tela, não a do conteúdo. */
+@media (max-width: 767px) {
+  .driver-popover.jurispro-tour {
+    max-width: calc(100vw - 2rem);
+    min-width: 0;
+    padding: 1rem 1.125rem;
+  }
+}

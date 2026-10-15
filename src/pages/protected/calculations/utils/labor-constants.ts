@@ -1,0 +1,20 @@
+import { env } from "@/env";
+
+export const MONTHLY_WORK_HOURS = 220;
+export const OVERTIME_MULTIPLIER = 1.5;
+export const NIGHT_SHIFT_MULTIPLIER_V2 = 1.3;
+export const NIGHT_SHIFT_MULTIPLIER_V3 = 1.2;
+export const DEFAULT_MINIMUM_WAGE = env.VITE_DEFAULT_MINIMUM_WAGE;
+export const DEFAULT_FGTS_RATE = env.VITE_DEFAULT_FGTS_RATE;
+export const FGTS_FINE_RATE = 0.4;
+export const DANGEROUS_WORK_RATE = 0.3;
+export const VACATION_BONUS_RATIO = 1 / 3;
+
+export const UNEMPLOYMENT_INSURANCE_BRACKETS = {
+  TIER1_LIMIT: 2222.17,
+  TIER2_LIMIT: 3703.99,
+  TIER1_RATE: 0.8,
+  TIER2_RATE: 0.5,
+  TIER1_BASE: 1777.74,
+  MAX_VALUE: 2518.65,
+} as const;

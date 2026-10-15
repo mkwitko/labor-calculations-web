@@ -1,0 +1,9 @@
+# pnpm 11 reads settings from here, not from a "pnpm" field in package.json.
+# core-js is denied on purpose: its postinstall only prints a donation banner.
+allowBuilds:
+  '@sentry/cli': true
+  core-js: false
+  esbuild: true
+  # wrangler baixa o binário do runtime no postinstall; sem isso o deploy roda
+  # com o pacote pela metade.
+  workerd: true

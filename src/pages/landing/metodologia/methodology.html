@@ -1,0 +1,1614 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Metodologia de Cálculo — LexLaboral</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --paper: #f4f5f7; --surface: #ffffff; --surface-2: #eceef2; --surface-3: #e3e6ec;
+    --ink: #161a20; --ink-soft: #3d434d; --muted: #6b7078;
+    --line: #d9dce2; --line-soft: #e6e8ed;
+    --accent: #8a2b34; --accent-ink: #6f232b; --accent-wash: #f4e8e9;
+    --gain: #17663f; --gain-wash: #e3f0e9;
+    --info: #2b5673; --info-wash: #e7eef4;
+    --mono-bg: #f0f1f4;
+    --shadow: 0 1px 2px rgba(20,26,32,.05), 0 8px 24px -12px rgba(20,26,32,.16);
+    --shadow-lg: 0 4px 12px -4px rgba(20,26,32,.12), 0 24px 48px -24px rgba(20,26,32,.28);
+    --serif: "Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,"Georgia",serif;
+    --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono: "SF Mono","JetBrains Mono","Roboto Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  .tnum { font-variant-numeric: tabular-nums; }
+  h1,h2,h3,h4 { text-wrap: balance; }
+
+  /* Topbar */
+  .topbar { position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:11px clamp(14px,3vw,32px); background:color-mix(in srgb,var(--paper) 88%,transparent); backdrop-filter:saturate(1.4) blur(10px); border-bottom:1px solid var(--line); }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:600; letter-spacing:-.01em; }
+  .brand .seal { width:27px; height:27px; border-radius:6px; background:var(--accent); color:#fff; display:grid; place-items:center; font-family:var(--serif); font-size:15px; font-weight:700; flex:none; }
+  .brand small { display:block; color:var(--muted); font-weight:400; font-size:11.5px; letter-spacing:.02em; }
+  .top-actions { display:flex; gap:8px; }
+  .btn { border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); border-radius:8px; padding:8px 13px; font:inherit; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:7px; transition:border-color .15s,color .15s,background .15s; }
+  .btn:hover { border-color:var(--accent); color:var(--accent-ink); }
+  .btn:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .btn.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .btn.primary:hover { background:var(--accent-ink); color:#fff; }
+
+  .shell { max-width:1240px; margin:0 auto; padding:0 clamp(14px,3vw,32px); }
+
+  /* Hero */
+  .hero { padding:52px 0 36px; border-bottom:1px solid var(--line); }
+  .eyebrow { text-transform:uppercase; letter-spacing:.16em; font-size:12px; font-weight:600; color:var(--accent-ink); }
+  .hero h1 { font-family:var(--serif); font-weight:700; letter-spacing:-.02em; font-size:clamp(32px,5.4vw,54px); line-height:1.05; margin:16px 0 0; max-width:17ch; }
+  .hero .lede { font-size:clamp(16px,2.2vw,19px); color:var(--ink-soft); max-width:64ch; margin:20px 0 0; }
+  .pillars { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:34px; }
+  @media (max-width:680px){ .pillars{grid-template-columns:1fr} }
+  .pillar { background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px 18px; box-shadow:var(--shadow); }
+  .pillar h3 { margin:9px 0 4px; font-size:15px; letter-spacing:-.01em; }
+  .pillar p { margin:0; font-size:13.5px; color:var(--muted); line-height:1.5; }
+  .pillar .ic { width:23px; height:23px; color:var(--accent); }
+
+  /* Work layout: form + results */
+  .work { display:grid; grid-template-columns:340px minmax(0,1fr); gap:36px; align-items:start; padding-top:8px; }
+  @media (max-width:960px){ .work{grid-template-columns:1fr; gap:0} }
+
+  /* Form panel */
+  .panel { position:sticky; top:64px; align-self:start; background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); overflow:hidden; max-height:calc(100vh - 84px); display:flex; flex-direction:column; }
+  @media (max-width:960px){ .panel{position:static; max-height:none; margin:20px 0} }
+  .panel-head { padding:15px 18px; border-bottom:1px solid var(--line-soft); background:var(--surface-2); display:flex; align-items:center; gap:9px; }
+  .panel-head strong { font-size:14px; letter-spacing:-.01em; }
+  .panel-head .ic { width:17px; height:17px; color:var(--accent); }
+  .panel-body { padding:6px 16px 18px; overflow-y:auto; }
+  fieldset { border:none; margin:0; padding:14px 0 4px; border-bottom:1px solid var(--line-soft); }
+  fieldset:last-child { border-bottom:none; }
+  legend { font-size:11px; text-transform:uppercase; letter-spacing:.09em; color:var(--accent-ink); font-weight:700; padding:0; margin-bottom:8px; }
+  .fld { display:flex; flex-direction:column; gap:4px; margin-bottom:11px; }
+  .fld:last-child { margin-bottom:2px; }
+  .fld label { font-size:12.5px; color:var(--ink-soft); font-weight:500; }
+  .fld label .hint { color:var(--muted); font-weight:400; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  input[type=text], input[type=number], input[type=date], select {
+    width:100%; font:inherit; font-size:13.5px; padding:7px 9px; border:1px solid var(--line); border-radius:7px; background:var(--surface); color:var(--ink); }
+  input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-wash); }
+  .chk { display:flex; align-items:flex-start; gap:8px; margin-bottom:9px; font-size:13px; color:var(--ink-soft); cursor:pointer; }
+  .chk input { margin-top:2px; accent-color:var(--accent); width:15px; height:15px; flex:none; }
+  .chk span small { display:block; color:var(--muted); font-size:11.5px; }
+  .rowset { display:flex; flex-direction:column; gap:8px; }
+  .rowcard { border:1px solid var(--line-soft); border-radius:8px; padding:9px; background:var(--surface-2); position:relative; }
+  .rowcard .rm { position:absolute; top:6px; right:6px; border:none; background:none; color:var(--muted); cursor:pointer; font-size:15px; line-height:1; padding:2px 5px; border-radius:5px; }
+  .rowcard .rm:hover { color:var(--accent); background:var(--accent-wash); }
+  .addbtn { font-size:12px; color:var(--accent-ink); background:var(--accent-wash); border:1px dashed color-mix(in srgb,var(--accent) 45%,transparent); border-radius:7px; padding:7px; cursor:pointer; font-family:inherit; width:100%; }
+  .addbtn:hover { background:color-mix(in srgb,var(--accent-wash) 70%, #fff); }
+
+  main { padding-bottom:110px; min-width:0; }
+
+  /* Result header / KPIs */
+  .result-top { padding:24px 0 8px; }
+  .kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:6px; }
+  @media (max-width:720px){ .kpis{grid-template-columns:1fr} }
+  .kpi { border-radius:13px; padding:18px 18px 16px; border:1px solid var(--line); background:var(--surface); box-shadow:var(--shadow); }
+  .kpi.hero-kpi { background:linear-gradient(135deg,var(--accent),var(--accent-ink)); border-color:var(--accent-ink); color:#fff; }
+  .kpi .k-lbl { font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; opacity:.85; }
+  .kpi .k-val { font-family:var(--serif); font-size:clamp(24px,3.4vw,32px); font-weight:700; letter-spacing:-.02em; margin-top:5px; font-variant-numeric:tabular-nums; }
+  .kpi.hero-kpi .k-sub { font-size:12px; opacity:.9; margin-top:4px; }
+  .kpi .k-sub { font-size:12px; color:var(--muted); margin-top:4px; }
+  .kpi .k-val.pos { color:var(--gain); } .kpi .k-val.accent { color:var(--accent-ink); }
+
+  /* Sections */
+  section.block { padding:44px 0; border-bottom:1px solid var(--line-soft); scroll-margin-top:72px; }
+  .sec-head { display:flex; align-items:baseline; gap:13px; margin-bottom:7px; }
+  .sec-num { font-family:var(--mono); font-size:12px; color:var(--accent); font-weight:600; border:1px solid var(--accent); border-radius:6px; padding:2px 8px; flex:none; }
+  h2 { font-family:var(--serif); font-weight:700; font-size:clamp(23px,3.3vw,32px); letter-spacing:-.02em; margin:0; line-height:1.12; }
+  .sec-desc { color:var(--ink-soft); max-width:70ch; margin:11px 0 24px; font-size:15px; }
+
+  /* Case card */
+  .case-card { background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); overflow:hidden; }
+  .case-card .ch { padding:14px 20px; border-bottom:1px solid var(--line-soft); display:flex; align-items:center; gap:10px; background:var(--surface-2); flex-wrap:wrap; }
+  .case-card .ch strong { font-size:14.5px; }
+  .case-card .ch .tag { font-size:12px; color:#fff; background:var(--accent); padding:3px 10px; border-radius:999px; }
+  .facts { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line-soft); }
+  @media (max-width:720px){ .facts{grid-template-columns:repeat(2,1fr)} }
+  .fact { background:var(--surface); padding:14px 16px; }
+  .fact dt { font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin:0 0 3px; }
+  .fact dd { margin:0; font-size:16.5px; font-weight:600; letter-spacing:-.01em; }
+
+  /* Verba cards */
+  .verbas { display:flex; flex-direction:column; gap:11px; }
+  details.verba { background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden; transition:border-color .15s,box-shadow .15s; }
+  details.verba[open] { border-color:var(--accent); box-shadow:var(--shadow); }
+  details.verba > summary { list-style:none; cursor:pointer; padding:15px 18px; display:grid; grid-template-columns:auto 1fr auto auto; align-items:center; gap:13px; }
+  details.verba > summary::-webkit-details-marker { display:none; }
+  .v-chev { width:17px; height:17px; color:var(--muted); transition:transform .2s; flex:none; }
+  details.verba[open] .v-chev { transform:rotate(90deg); color:var(--accent); }
+  .v-name { font-weight:600; letter-spacing:-.01em; font-size:15px; }
+  .v-name .v-law { display:block; font-size:11.5px; font-weight:400; color:var(--muted); font-family:var(--mono); margin-top:2px; }
+  .v-total { text-align:right; font-variant-numeric:tabular-nums; }
+  .v-total .lbl { display:block; font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+  .v-total .val { font-size:17px; font-weight:700; letter-spacing:-.01em; }
+  @media (max-width:620px){ details.verba > summary{grid-template-columns:auto 1fr auto} .v-total.nominal{display:none} }
+  .v-body { padding:2px 18px 20px; border-top:1px solid var(--line-soft); }
+
+  ol.steps { list-style:none; counter-reset:s; margin:16px 0 0; padding:0; }
+  ol.steps > li { counter-increment:s; position:relative; padding:0 0 18px 40px; }
+  ol.steps > li::before { content:counter(s); position:absolute; left:0; top:0; width:25px; height:25px; border-radius:50%; background:var(--accent-wash); color:var(--accent-ink); font-family:var(--mono); font-size:12px; font-weight:600; display:grid; place-items:center; }
+  ol.steps > li::after { content:""; position:absolute; left:12px; top:28px; bottom:2px; width:1.5px; background:var(--line); }
+  ol.steps > li:last-child { padding-bottom:0; }
+  ol.steps > li:last-child::after { display:none; }
+  .step-t { font-weight:600; font-size:14px; margin-bottom:6px; }
+  .step-t .ref { font-family:var(--mono); font-size:10.5px; color:var(--muted); font-weight:400; }
+  .expr { font-family:var(--mono); font-size:13px; background:var(--mono-bg); border:1px solid var(--line-soft); border-radius:8px; padding:9px 13px; overflow-x:auto; line-height:1.75; color:var(--ink); }
+  .expr .op { color:var(--muted); } .expr .res { color:var(--accent-ink); font-weight:600; }
+  .step-note { font-size:12.5px; color:var(--muted); margin:6px 0 0; }
+  .codechip { display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:11px; color:var(--ink-soft); background:var(--mono-bg); border:1px solid var(--line-soft); padding:2px 7px; border-radius:6px; white-space:nowrap; }
+  .codechip svg { width:11px; height:11px; color:var(--accent); }
+  .v-result { margin-top:18px; padding:13px 16px; background:var(--gain-wash); border:1px solid color-mix(in srgb,var(--gain) 30%,transparent); border-radius:10px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .v-result .rl { font-size:13.5px; color:var(--ink-soft); } .v-result .rv { font-size:19px; font-weight:700; color:var(--gain); font-variant-numeric:tabular-nums; }
+
+  .month-toggle { margin-top:16px; }
+  .month-toggle > summary { cursor:pointer; list-style:none; font-size:12.5px; color:var(--accent-ink); font-weight:600; display:inline-flex; align-items:center; gap:6px; }
+  .month-toggle > summary::-webkit-details-marker { display:none; }
+  .table-wrap { overflow-x:auto; margin-top:12px; border:1px solid var(--line-soft); border-radius:10px; }
+  table.data { border-collapse:collapse; width:100%; font-size:12.5px; }
+  table.data th, table.data td { padding:7px 11px; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  table.data th:first-child, table.data td:first-child { text-align:left; }
+  table.data thead th { background:var(--surface-2); color:var(--muted); font-weight:600; text-transform:uppercase; font-size:10px; letter-spacing:.04em; position:sticky; top:0; }
+  table.data tbody tr { border-top:1px solid var(--line-soft); }
+  table.data tbody tr:hover { background:var(--surface-2); }
+  table.data tfoot td { border-top:2px solid var(--line); font-weight:700; }
+
+  .method-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+  @media (max-width:720px){ .method-grid{grid-template-columns:1fr} }
+  .method { background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px; box-shadow:var(--shadow); }
+  .method h3 { margin:0 0 5px; font-family:var(--serif); font-size:19px; letter-spacing:-.01em; }
+  .method .h-law { font-family:var(--mono); font-size:11px; color:var(--accent-ink); margin-bottom:11px; }
+  .method p { margin:0 0 11px; font-size:14px; color:var(--ink-soft); } .method p:last-child { margin-bottom:0; }
+  .method .expr { font-size:12px; }
+
+  .summary-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+  table.summary { border-collapse:collapse; width:100%; font-size:14px; min-width:580px; }
+  table.summary th, table.summary td { padding:11px 15px; text-align:right; font-variant-numeric:tabular-nums; }
+  table.summary th:first-child, table.summary td:first-child { text-align:left; }
+  table.summary thead th { background:var(--surface-2); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  table.summary tbody tr { border-top:1px solid var(--line-soft); }
+  table.summary tbody td:first-child { font-weight:500; }
+  table.summary tfoot td { border-top:2px solid var(--accent); font-weight:700; font-size:14.5px; }
+  table.summary tfoot .big td { font-size:16.5px; }
+  .pos { color:var(--gain); } .neg { color:var(--accent-ink); }
+
+  table.legal { border-collapse:collapse; width:100%; font-size:14px; }
+  table.legal th, table.legal td { padding:10px 15px; text-align:left; vertical-align:top; }
+  table.legal thead th { font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); border-bottom:2px solid var(--line); }
+  table.legal tbody tr { border-bottom:1px solid var(--line-soft); }
+  table.legal td.law { font-family:var(--mono); font-size:12px; color:var(--accent-ink); white-space:nowrap; }
+
+  .callout { display:flex; gap:13px; border-radius:12px; padding:16px 18px; margin-top:8px; }
+  .callout.info { background:var(--info-wash); border:1px solid color-mix(in srgb,var(--info) 30%,transparent); }
+  .callout.warn { background:var(--accent-wash); border:1px solid color-mix(in srgb,var(--accent) 32%,transparent); }
+  .callout svg { width:21px; height:21px; flex:none; margin-top:2px; }
+  .callout.info svg { color:var(--info); } .callout.warn svg { color:var(--accent); }
+  .callout p { margin:0; font-size:13.5px; color:var(--ink-soft); } .callout strong { color:var(--ink); }
+
+  footer.foot { padding:38px 0 10px; color:var(--muted); font-size:12.5px; line-height:1.6; }
+  .disclaimer { border-top:1px solid var(--line-soft); padding-top:16px; margin-top:8px; }
+
+  .visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+</style>
+</head>
+<body>
+
+
+<header class="topbar">
+  <div class="brand"><span class="seal">Jp</span><span>LexLaboral<small>Metodologia de cálculo &middot; liquidação completa</small></span></div>
+  <div class="top-actions">
+    <button class="btn" id="resetBtn" type="button">↺ Restaurar exemplo</button>
+    <button class="btn" id="printBtn" type="button">⎙ Imprimir</button>
+  </div>
+</header>
+
+<div class="shell">
+  <div class="hero">
+    <span class="eyebrow">Transparência técnica &middot; Motor de Liquidação (calculateLaborV3)</span>
+    <h1>Cada centavo, rastreável até a fórmula e à lei.</h1>
+    <p class="lede">Esta página abre o <strong>cálculo de liquidação completo da plataforma</strong> — a função
+      <code class="codechip">calculateLaborV3</code> — para o advogado especialista. Edite os dados do caso no painel
+      e veja <strong>cada passo</strong> recalcular em tempo real: fórmula aplicada, números substituídos, índice
+      oficial e dispositivo legal. É o mesmo motor que gera as liquidações do sistema, sem caixa-preta.</p>
+    <div class="pillars">
+      <div class="pillar"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M6 5v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5M9 9h6M9 13h6M9 17h3"/></svg><h3>Fundamentação legal</h3><p>Toda verba amarrada a artigo da CLT, súmula do TST ou decisão do STF (ADC 58).</p></div>
+      <div class="pillar"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg><h3>Índices oficiais</h3><p>IPCA-E (Súmula 381), juros ADC 58 (SELIC/TRD), tabelas INSS e IRPF versionadas.</p></div>
+      <div class="pillar"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3M9 12h6M12 9v6"/></svg><h3>Espelho do código</h3><p>Cada passo cita a função e o arquivo do motor. O que você lê é exatamente o que roda.</p></div>
+    </div>
+  </div>
+
+  <div class="work">
+    <!-- FORM PANEL -->
+    <aside class="panel" aria-label="Dados do cálculo">
+      <div class="panel-head"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><strong>Dados do cálculo</strong></div>
+      <div class="panel-body">
+        <form id="calcForm" autocomplete="off">
+
+          <fieldset>
+            <legend>Contrato</legend>
+            <div class="fld"><label for="clientName">Reclamante</label><input type="text" id="clientName" value="João da Silva (exemplo)"></div>
+            <div class="grid2">
+              <div class="fld"><label for="startDate">Admissão</label><input type="date" id="startDate" value="2021-03-01"></div>
+              <div class="fld"><label for="endDate">Demissão</label><input type="date" id="endDate" value="2024-08-15"></div>
+            </div>
+            <div class="fld"><label for="terminationType">Tipo de rescisão</label>
+              <select id="terminationType">
+                <option value="sem_justa_causa" selected>Dispensa sem justa causa</option>
+                <option value="rescisao_indireta">Rescisão indireta (art. 483)</option>
+                <option value="pedido_demissao">Pedido de demissão</option>
+                <option value="com_justa_causa">Dispensa por justa causa</option>
+              </select>
+            </div>
+            <div class="grid2">
+              <div class="fld"><label for="liquidationDate">Liquidação <span class="hint">(mês)</span></label><input type="date" id="liquidationDate" value="2026-03-01"></div>
+              <div class="fld"><label for="filingDate">Ajuizamento <span class="hint">(prescr.)</span></label><input type="date" id="filingDate" value=""></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Remuneração</legend>
+            <div class="grid2">
+              <div class="fld"><label for="lastSalary">Último salário</label><input type="number" id="lastSalary" value="3500" min="0" step="0.01"></div>
+              <div class="fld"><label for="baseSalary">Salário-base</label><input type="number" id="baseSalary" value="3500" min="0" step="0.01"></div>
+            </div>
+            <div class="fld"><label for="lastThreeSalariesAvg">Média p/ seguro-desemprego</label><input type="number" id="lastThreeSalariesAvg" value="3500" min="0" step="0.01"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Rescisão &amp; multas</legend>
+            <div class="fld"><label for="vacationVencidasCount">Períodos de férias vencidas</label><input type="number" id="vacationVencidasCount" value="1" min="0" step="1"></div>
+            <label class="chk"><input type="checkbox" id="priorNoticeWorked"><span>Aviso prévio trabalhado <small>(desmarcado = indenizado)</small></span></label>
+            <label class="chk"><input type="checkbox" id="applyArt477Fine" checked><span>Multa do art. 477 <small>(atraso na quitação)</small></span></label>
+            <label class="chk"><input type="checkbox" id="applyArt467" checked><span>Multa do art. 467 <small>(verbas incontroversas)</small></span></label>
+            <label class="chk"><input type="checkbox" id="applyPrescricaoQuinquenal"><span>Prescrição quinquenal <small>(corta verbas &gt; 5 anos do ajuizamento)</small></span></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Saldo de salário</legend>
+            <div class="rowset" id="saldoRows"></div>
+            <button type="button" class="addbtn" id="addSaldo">+ competência em aberto</button>
+          </fieldset>
+
+          <fieldset>
+            <legend>Adicionais &amp; jornada</legend>
+            <div class="grid2">
+              <div class="fld"><label for="extraHours">Horas extras <span class="hint">(50%)</span></label><input type="number" id="extraHours" value="0" min="0" step="1"></div>
+              <div class="fld"><label for="nightHours">Horas noturnas</label><input type="number" id="nightHours" value="0" min="0" step="1"></div>
+            </div>
+            <div class="grid2">
+              <div class="fld"><label for="nightAdditionalPercent">Adic. noturno %</label><input type="number" id="nightAdditionalPercent" value="20" min="0" step="1"></div>
+              <div class="fld"><label for="insalubrityLevel">Insalubridade</label>
+                <select id="insalubrityLevel"><option value="0" selected>Não</option><option value="10">Grau mínimo (10%)</option><option value="20">Grau médio (20%)</option><option value="40">Grau máximo (40%)</option></select>
+              </div>
+            </div>
+            <label class="chk"><input type="checkbox" id="dangerousWork"><span>Periculosidade <small>(30% do salário-base)</small></span></label>
+            <label class="chk"><input type="checkbox" id="applyDsrOnExtra"><span>DSR sobre extras/noturno <small>(Súmula 172)</small></span></label>
+            <div class="grid2">
+              <div class="fld"><label for="intervalIntrajornadaHours">Intervalo suprimido <span class="hint">h/mês</span></label><input type="number" id="intervalIntrajornadaHours" value="0" min="0" step="1"></div>
+              <div class="fld"><label for="transferAdditionalMonths">Transferência <span class="hint">meses</span></label><input type="number" id="transferAdditionalMonths" value="0" min="0" step="1"></div>
+            </div>
+            <div class="fld"><label for="stabilityMonths">Estabilidade indenizada <span class="hint">(meses restantes)</span></label><input type="number" id="stabilityMonths" value="0" min="0" step="1"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Diferenças salariais</legend>
+            <label class="chk"><input type="checkbox" id="salDiffOn"><span>Incluir equiparação / desvio de função</span></label>
+            <div id="salDiffWrap" style="display:none">
+              <div class="fld"><label for="salDiffType">Tipo</label><select id="salDiffType"><option value="equiparacao">Equiparação (art. 461)</option><option value="desvio_funcao">Desvio de função</option></select></div>
+              <label class="chk"><input type="checkbox" id="salDiffReflexos" checked><span>Aplicar reflexos (13º, férias, aviso)</span></label>
+              <div class="rowset" id="salDiffRows"></div>
+              <button type="button" class="addbtn" id="addSalDiff">+ período</button>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Outras verbas</legend>
+            <div class="rowset" id="customRows"></div>
+            <button type="button" class="addbtn" id="addCustom">+ verba mensal</button>
+          </fieldset>
+
+          <fieldset>
+            <legend>Abatimentos</legend>
+            <div class="grid2">
+              <div class="fld"><label for="fgtsAlreadyDeposited">FGTS já depositado</label><input type="number" id="fgtsAlreadyDeposited" value="0" min="0" step="0.01"></div>
+              <div class="fld"><label for="amountsAlreadyPaid">Verbas já pagas</label><input type="number" id="amountsAlreadyPaid" value="0" min="0" step="0.01"></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Parâmetros &amp; alíquotas</legend>
+            <div class="grid2">
+              <div class="fld"><label for="irpfDependents">Dependentes IRPF</label><input type="number" id="irpfDependents" value="0" min="0" step="1"></div>
+              <div class="fld"><label for="honorariosRate">Honorários %</label><input type="number" id="honorariosRate" value="15" min="0" step="0.5"></div>
+            </div>
+            <div class="grid2">
+              <div class="fld"><label for="employerInssRate">INSS patronal %</label><input type="number" id="employerInssRate" value="20" min="0" step="0.5"></div>
+              <div class="fld"><label for="satRate">SAT/RAT %</label><input type="number" id="satRate" value="3" min="0" step="0.5"></div>
+            </div>
+            <div class="grid2">
+              <div class="fld"><label for="minimumWage">Salário mínimo</label><input type="number" id="minimumWage" value="1621" min="0" step="0.01"></div>
+              <div class="fld"><label for="fgtsRate">Alíquota FGTS %</label><input type="number" id="fgtsRate" value="8" min="0" step="0.5"></div>
+            </div>
+          </fieldset>
+
+        </form>
+      </div>
+    </aside>
+
+    <!-- RESULTS -->
+    <main>
+      <div class="result-top">
+        <div class="kpis" id="kpis"></div>
+      </div>
+
+      <section class="block" id="caso">
+        <div class="sec-head"><span class="sec-num">01</span><h2>O caso em cálculo</h2></div>
+        <p class="sec-desc">Os números abaixo são gerados executando o cenário do painel na função
+          <code class="codechip">calculateLaborV3</code> — o cálculo de liquidação completo da plataforma. Nada é ilustrativo.</p>
+        <div class="case-card" id="caseCard"></div>
+        <div class="callout info" style="margin-top:18px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <p><strong>Como ler cada verba:</strong> clique para expandir. A cadeia numerada segue a ordem do código —
+            <em>valor bruto → correção monetária → juros de mora → total</em> — com a função do motor em cada etapa.</p>
+        </div>
+      </section>
+
+      <section class="block" id="verbas">
+        <div class="sec-head"><span class="sec-num">02</span><h2>Verba a verba, passo a passo</h2></div>
+        <p class="sec-desc">Cada card mostra o cálculo integral, do valor nominal ao total já corrigido e com juros até a liquidação. Recalcula ao editar o painel.</p>
+        <div class="verbas" id="verbasList"></div>
+      </section>
+
+      <section class="block" id="correcao">
+        <div class="sec-head"><span class="sec-num">03</span><h2>Correção monetária &amp; juros de mora</h2></div>
+        <p class="sec-desc">Os dois mecanismos que atualizam as verbas até a liquidação. IPCA-E, SELIC e TRD acompanham as tabelas oficiais, e a tabela usada por cada cálculo fica congelada — ver a seção 07.</p>
+        <div class="method-grid" id="methodCJ"></div>
+        <div class="callout info" id="adc58Note" style="margin-top:16px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <p><strong>Como os juros são somados.</strong> Seguindo a modulação do STF na ADC 58, o motor aplica
+            <strong>TRD simples, mês a mês, até 12/2024</strong> e, a partir de 01/2025, a <strong>SELIC acumulada</strong> —
+            ambas sobre o valor já corrigido. A taxa efetiva deste cenário está indicada acima.</p>
+        </div>
+      </section>
+
+      <section class="block" id="tributos">
+        <div class="sec-head"><span class="sec-num">04</span><h2>Descontos do trabalhador — INSS &amp; IRPF</h2></div>
+        <p class="sec-desc">Incidem apenas sobre verbas de <strong>natureza salarial</strong>. Aviso indenizado e férias proporcionais são indenizatórios e ficam de fora (TST Súmula 305; STJ REsp 1.230.957).</p>
+        <div class="method-grid" id="methodTrib"></div>
+      </section>
+
+      <section class="block" id="encargos">
+        <div class="sec-head"><span class="sec-num">05</span><h2>Encargos suportados pelo réu</h2></div>
+        <p class="sec-desc">Além do crédito líquido do reclamante, o reclamado responde por encargos patronais, honorários de sucumbência e custas processuais.</p>
+        <div class="summary-wrap"><table class="summary" id="encargosTable"></table></div>
+        <p class="step-note" style="margin-top:13px">Funções: <code class="codechip">calculateInssEmployer</code> <code class="codechip">calculateHonorariosSucumbencia</code> <code class="codechip">calculateCustasJudiciais</code></p>
+      </section>
+
+      <section class="block" id="resumo">
+        <div class="sec-head"><span class="sec-num">06</span><h2>Quadro-resumo da liquidação</h2></div>
+        <p class="sec-desc">O mesmo demonstrativo que o sistema exporta. A soma dos totais por verba fecha exatamente com o bruto devido ao reclamante.</p>
+        <div class="summary-wrap"><table class="summary" id="summaryTable"></table></div>
+        <p class="step-note" style="margin-top:13px" id="summaryFoot"></p>
+      </section>
+
+      <section class="block" id="auditoria">
+        <div class="sec-head"><span class="sec-num">07</span><h2>Procedência e auditoria do número</h2></div>
+        <p class="sec-desc">Um cálculo só serve como prova se produzir o mesmo resultado amanhã e se for possível explicar qualquer diferença. É o que estes quatro mecanismos garantem.</p>
+        <div class="table-wrap" style="border:none">
+          <table class="legal">
+            <thead><tr><th>Mecanismo</th><th>O que garante</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Tabela de índices congelada</td>
+                <td>Ao salvar, a tabela IPCA-E/SELIC/TRD vigente é congelada e identificada por um hash SHA-256. Editar qualquer campo depois — inclusive o nome do reclamante — reusa a tabela congelada, então o total não se move sozinho quando os índices oficiais são atualizados.</td>
+              </tr>
+              <tr>
+                <td>Atualização de índices explícita</td>
+                <td>Adotar índices novos é ato deliberado: o sistema simula primeiro e mostra o impacto verba a verba, com a tabela antiga e a nova lado a lado. Nada é gravado sem confirmação.</td>
+              </tr>
+              <tr>
+                <td>Memória de cálculo persistida</td>
+                <td>A decomposição verba a verba é gravada junto com o resultado, com o fundamento legal de cada linha. O demonstrativo é reemitido a partir do que foi salvo, não recalculado — e a soma das linhas fecha com o bruto devido ao reclamante.</td>
+              </tr>
+              <tr>
+                <td>Trilha de auditoria</td>
+                <td>Criação, edição, mudança de situação, atualização de índices e exclusão ficam registradas com autor, data e o que mudou, campo a campo. Junto com a versão do motor, é o que responde &ldquo;por que este número&rdquo; numa impugnação.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout info" style="margin-top:16px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <p><strong>Sobre o total desta página.</strong> O <em>valor total da rescisão</em> inclui o seguro-desemprego, que é benefício previdenciário e não dívida do reclamado. A conferência da memória de cálculo é feita contra o <strong>bruto devido ao reclamante</strong> — que exclui o seguro-desemprego e já incorpora correção e juros.</p>
+        </div>
+      </section>
+
+<section class="block" id="fundamentos" style="border-bottom:none">
+        <div class="sec-head"><span class="sec-num">08</span><h2>Fundamentação legal, verba por verba</h2></div>
+        <p class="sec-desc">Referência do dispositivo que sustenta cada cálculo.</p>
+        <div class="table-wrap" style="border:none">
+          <table class="legal">
+            <thead><tr><th>Verba / mecanismo</th><th>Fundamento</th></tr></thead>
+            <tbody>
+              <tr><td>Aviso prévio proporcional</td><td class="law">Lei 12.506/2011; CLT art. 487</td></tr>
+              <tr><td>13º salário proporcional</td><td class="law">CLT art. 130; Súmula 1 TST</td></tr>
+              <tr><td>Férias + 1/3</td><td class="law">CF art. 7º, XVII; CLT arts. 130, 137, 146</td></tr>
+              <tr><td>Saldo de salário</td><td class="law">CLT art. 462</td></tr>
+              <tr><td>FGTS 8% + multa de 40%</td><td class="law">Lei 8.036/1990, arts. 15 e 18, §1º</td></tr>
+              <tr><td>Multa do art. 477</td><td class="law">CLT art. 477, §§ 6º e 8º</td></tr>
+              <tr><td>Multa do art. 467</td><td class="law">CLT art. 467</td></tr>
+              <tr><td>Horas extras / adicional noturno</td><td class="law">CLT arts. 59 e 73; Súmula 172 TST</td></tr>
+              <tr><td>Insalubridade / periculosidade</td><td class="law">CLT arts. 192 e 193</td></tr>
+              <tr><td>Intervalo intrajornada</td><td class="law">CLT art. 71, §4º</td></tr>
+              <tr><td>Adicional de transferência</td><td class="law">CLT art. 469, §3º</td></tr>
+              <tr><td>Diferenças salariais</td><td class="law">CLT art. 461 (equiparação); Súmula 6 TST</td></tr>
+              <tr><td>Estabilidade indenizada</td><td class="law">ADCT art. 10, II; Súmulas 244/378 TST</td></tr>
+              <tr><td>Seguro-desemprego</td><td class="law">Lei 7.998/1990; tabela MTE</td></tr>
+              <tr><td>Correção monetária</td><td class="law">IPCA-E; Súmula 381 TST; STF ADC 58</td></tr>
+              <tr><td>Juros de mora</td><td class="law">STF ADC 58 (TRD até 12/2024; SELIC a partir de 01/2025)</td></tr>
+              <tr><td>INSS do empregado</td><td class="law">Lei 8.212/1991; tabela progressiva vigente</td></tr>
+              <tr><td>IRPF (rendimentos acumulados)</td><td class="law">Art. 12-A, Lei 7.713/1988; IN RFB 1.500</td></tr>
+              <tr><td>Prescrição quinquenal</td><td class="law">CF art. 7º, XXIX; Súmula 153 TST</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <p><strong>LexLaboral — cálculo de liquidação completo da plataforma (<code class="codechip">calculateLaborV3</code>).</strong>
+          Todos os valores desta página são calculados no navegador pelo porte fiel do motor, com a tabela de índices padrão (IPCA-E / SELIC / TRD, cobrindo 01/2024 a 03/2026).</p>
+        <p class="disclaimer">Documento técnico-demonstrativo destinado a advogados. Índices e tabelas fiscais são atualizados conforme publicação oficial; resultados variam com os parâmetros de cada caso e a data de liquidação. Datas tratadas em UTC. A tabela de índices padrão cobre 01/2024–03/2026; verbas fora desse intervalo usam fator de correção neutro (1,0) até a base ser estendida.</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────────────────────
+   LexLaboral — cálculo de liquidação completo da plataforma (calculateLaborV3)
+   Porte fiel do motor TypeScript para JavaScript de navegador.
+   Datas tratadas em UTC para reprodutibilidade determinística.
+   ───────────────────────────────────────────────────────────────────────── */
+(function (global) {
+  "use strict";
+
+  var round = function (v) { return Math.round(v * 100) / 100; };
+
+  // ─── date-utils ──────────────────────────────────────────────────────────
+  function toMonthRange(d) {
+    var iso = d.toISOString().slice(0, 10);
+    var p = iso.split("-").map(Number);
+    return { year: p[0], month: p[1] };
+  }
+  function monthRangeKey(m) { return m.year + "-" + String(m.month).padStart(2, "0"); }
+  function parseMonthRangeKey(key) { var p = key.split("-").map(Number); return { year: p[0], month: p[1] }; }
+  function addMonths(m, n) {
+    var total = m.year * 12 + (m.month - 1) + n;
+    return { year: Math.floor(total / 12), month: (total % 12) + 1 };
+  }
+  function diffMonths(a, b) { return (a.year - b.year) * 12 + (a.month - b.month); }
+  function generateMonthRange(start, end) {
+    var months = []; var current = start;
+    while (current.year < end.year || (current.year === end.year && current.month <= end.month)) {
+      months.push(current); current = addMonths(current, 1);
+    }
+    return months;
+  }
+  function daysInMonth(year, month) { return new Date(Date.UTC(year, month, 0)).getUTCDate(); }
+
+  // Counts months where >= 15 days were worked (half-month rule). UTC accessors.
+  function countAvosInRange(from, to) {
+    var avos = 0;
+    var current = toMonthRange(from);
+    var endMR = toMonthRange(to);
+    while (current.year < endMR.year || (current.year === endMR.year && current.month <= endMR.month)) {
+      var dim = daysInMonth(current.year, current.month);
+      var worked = dim;
+      if (current.year === from.getUTCFullYear() && current.month === from.getUTCMonth() + 1) {
+        worked = dim - from.getUTCDate() + 1;
+      }
+      if (current.year === endMR.year && current.month === endMR.month) {
+        worked = Math.min(worked, to.getUTCDate());
+      }
+      if (worked >= 15) avos++;
+      current = addMonths(current, 1);
+    }
+    return avos;
+  }
+  function count13thAvos(startDate, endDate, projectedEnd) {
+    var termYear = endDate.getUTCFullYear();
+    var yearStart = new Date(Date.UTC(termYear, 0, 1));
+    var countFrom = startDate > yearStart ? startDate : yearStart;
+    return countAvosInRange(countFrom, projectedEnd);
+  }
+  function countVacationAvos(startDate, projectedEnd) {
+    return Math.min(countAvosInRange(startDate, projectedEnd), 12);
+  }
+  function countWorkedMonths(startDate, endDate) {
+    var diffMs = endDate.getTime() - startDate.getTime();
+    var totalDays = diffMs / (1000 * 60 * 60 * 24);
+    var years = Math.floor(totalDays / 365.25);
+    var remainDays = totalDays - years * 365.25;
+    var months = Math.floor(remainDays / 30);
+    var days = Math.floor(remainDays - months * 30);
+    var totalMonths = round(years * 12 + months + days / 30);
+    return { years: years, months: months, days: days, totalMonths: totalMonths };
+  }
+  function calculateAvisoPrevioDays(workedYears) { return Math.min(30 + workedYears * 3, 90); }
+  function projectEndDate(endDate, workedYears, avisoPrevioCumprido) {
+    if (avisoPrevioCumprido) return endDate;
+    var days = calculateAvisoPrevioDays(workedYears);
+    var projected = new Date(endDate.getTime());
+    projected.setUTCDate(projected.getUTCDate() + days);
+    return projected;
+  }
+
+  // ─── index-table ─────────────────────────────────────────────────────────
+  var DEFAULT_IPCA_E_DATA = [
+{"month":"2024-01","ipcaE":0.42,"ipcaECumulative":1,"selic":0.72,"selicCumulative":1,"trd":0.08},
+{"month":"2024-02","ipcaE":0.83,"ipcaECumulative":1.0042,"selic":0.72,"selicCumulative":1.0072,"trd":0.08},
+{"month":"2024-03","ipcaE":0.16,"ipcaECumulative":1.0126,"selic":0.72,"selicCumulative":1.0144,"trd":0.08},
+{"month":"2024-04","ipcaE":0.32,"ipcaECumulative":1.0142,"selic":0.73,"selicCumulative":1.0217,"trd":0.08},
+{"month":"2024-05","ipcaE":0.46,"ipcaECumulative":1.0174,"selic":0.73,"selicCumulative":1.0291,"trd":0.08},
+{"month":"2024-06","ipcaE":0.21,"ipcaECumulative":1.0221,"selic":0.73,"selicCumulative":1.0365,"trd":0.08},
+{"month":"2024-07","ipcaE":0.38,"ipcaECumulative":1.0242,"selic":0.73,"selicCumulative":1.0439,"trd":0.08},
+{"month":"2024-08","ipcaE":-0.02,"ipcaECumulative":1.0281,"selic":0.73,"selicCumulative":1.0514,"trd":0.08},
+{"month":"2024-09","ipcaE":0.54,"ipcaECumulative":1.0279,"selic":0.73,"selicCumulative":1.0589,"trd":0.08},
+{"month":"2024-10","ipcaE":0.56,"ipcaECumulative":1.0334,"selic":0.73,"selicCumulative":1.0664,"trd":0.08},
+{"month":"2024-11","ipcaE":0.39,"ipcaECumulative":1.0392,"selic":0.73,"selicCumulative":1.0739,"trd":0.08},
+{"month":"2024-12","ipcaE":0.59,"ipcaECumulative":1.0432,"selic":0.73,"selicCumulative":1.0815,"trd":0.08},
+{"month":"2025-01","ipcaE":0.62,"ipcaECumulative":1.0493,"selic":0.73,"selicCumulative":1.0891,"trd":0.07},
+{"month":"2025-02","ipcaE":0.69,"ipcaECumulative":1.0558,"selic":0.73,"selicCumulative":1.0968,"trd":0.07},
+{"month":"2025-03","ipcaE":0.35,"ipcaECumulative":1.0629,"selic":0.73,"selicCumulative":1.1045,"trd":0.07},
+{"month":"2025-04","ipcaE":0.33,"ipcaECumulative":1.0664,"selic":0.73,"selicCumulative":1.1122,"trd":0.07},
+{"month":"2025-05","ipcaE":0.42,"ipcaECumulative":1.0698,"selic":0.73,"selicCumulative":1.1199,"trd":0.07},
+{"month":"2025-06","ipcaE":0.26,"ipcaECumulative":1.0741,"selic":0.73,"selicCumulative":1.1277,"trd":0.07},
+{"month":"2025-07","ipcaE":0.28,"ipcaECumulative":1.0768,"selic":0.73,"selicCumulative":1.1355,"trd":0.07},
+{"month":"2025-08","ipcaE":-0.12,"ipcaECumulative":1.0797,"selic":0.73,"selicCumulative":1.1433,"trd":0.07},
+{"month":"2025-09","ipcaE":0.51,"ipcaECumulative":1.0785,"selic":0.73,"selicCumulative":1.1511,"trd":0.07},
+{"month":"2025-10","ipcaE":0.47,"ipcaECumulative":1.0837,"selic":0.73,"selicCumulative":1.159,"trd":0.07},
+{"month":"2025-11","ipcaE":0.41,"ipcaECumulative":1.0885,"selic":0.73,"selicCumulative":1.167,"trd":0.07},
+{"month":"2025-12","ipcaE":0.55,"ipcaECumulative":1.0927,"selic":0.73,"selicCumulative":1.175,"trd":0.07},
+{"month":"2026-01","ipcaE":0.58,"ipcaECumulative":1.0983,"selic":0.72,"selicCumulative":1.183,"trd":0.07},
+{"month":"2026-02","ipcaE":0.52,"ipcaECumulative":1.1042,"selic":0.72,"selicCumulative":1.1909,"trd":0.07},
+{"month":"2026-03","ipcaE":0.38,"ipcaECumulative":1.1095,"selic":0.72,"selicCumulative":1.1988,"trd":0.07}
+];
+
+  function createIndexTable(entries) {
+    var table = new Map();
+    for (var i = 0; i < entries.length; i++) table.set(entries[i].month, entries[i]);
+    return table;
+  }
+  function getCorrectionFactor(table, dueMonth, liquidationMonth) {
+    if (dueMonth >= liquidationMonth) return 1;
+    var dueEntry = table.get(dueMonth);
+    var liquidEntry = table.get(liquidationMonth);
+    if (!dueEntry || !liquidEntry) return 1;
+    var factorDue = dueEntry.ipcaECumulative;
+    var factorLiquid = liquidEntry.ipcaECumulative;
+    if (!factorDue || !factorLiquid) return 1;
+    return factorLiquid / factorDue;
+  }
+  var ADC58_CUTOFF_MONTH = "2024-12";
+  function nextMonthKey(key) {
+    var parts = key.split("-").map(Number);
+    var y = parts[0], m = parts[1];
+    return m === 12 ? (y + 1) + "-01" : y + "-" + String(m + 1).padStart(2, "0");
+  }
+  // ADC 58: TRD simples (mês a mês) até 12/2024 + SELIC acumulada de 01/2025.
+  // 'YYYY-MM' comparam lexicograficamente na ordem cronológica.
+  function calculateAdc58InterestRate(table, dueMonthKey, liquidationMonthKey) {
+    if (dueMonthKey >= liquidationMonthKey) return 0;
+    var totalRate = 0;
+    if (dueMonthKey < ADC58_CUTOFF_MONTH) {
+      var trdEnd = liquidationMonthKey < ADC58_CUTOFF_MONTH ? liquidationMonthKey : ADC58_CUTOFF_MONTH;
+      var current = nextMonthKey(dueMonthKey);
+      while (current <= trdEnd) {
+        totalRate += (table.get(current) ? table.get(current).trd : 0) / 100;
+        current = nextMonthKey(current);
+      }
+    }
+    var selicStart = dueMonthKey < ADC58_CUTOFF_MONTH
+      ? nextMonthKey(ADC58_CUTOFF_MONTH)
+      : nextMonthKey(dueMonthKey);
+    if (selicStart <= liquidationMonthKey) {
+      var fromEntry = table.get(selicStart);
+      var toEntry = table.get(liquidationMonthKey);
+      if (fromEntry && fromEntry.selicCumulative && toEntry && toEntry.selicCumulative) {
+        totalRate += toEntry.selicCumulative / fromEntry.selicCumulative - 1;
+      }
+    }
+    return totalRate;
+  }
+
+  // ─── monetary-correction ─────────────────────────────────────────────────
+  function correctValue(value, table, dueMonth, liquidationMonth) {
+    var dueKey = monthRangeKey(addMonths(dueMonth, 1));
+    var liquidKey = monthRangeKey(liquidationMonth);
+    var factor = getCorrectionFactor(table, dueKey, liquidKey);
+    var corrected = round(value * factor);
+    return { original: value, correctionFactor: factor, corrected: corrected, correctionAmount: round(corrected - value) };
+  }
+  function correctMonthlyValues(monthlyValues, table, liquidationMonth) {
+    var liquidKey = monthRangeKey(liquidationMonth);
+    return monthlyValues.map(function (entry) {
+      var parts = entry.month.split("-");
+      var dueMonth = addMonths({ year: Number(parts[0]), month: Number(parts[1]) }, 1);
+      var dueKey = monthRangeKey(dueMonth);
+      var factor = getCorrectionFactor(table, dueKey, liquidKey);
+      var corrected = round(entry.value * factor);
+      return { month: entry.month, original: entry.value, correctionFactor: factor, corrected: corrected, correctionAmount: round(corrected - entry.value) };
+    });
+  }
+
+  // ─── prescription ────────────────────────────────────────────────────────
+  function getPrescricaoCutoffKey(base) {
+    var baseMonth = toMonthRange(base);
+    return monthRangeKey({ year: baseMonth.year - 5, month: baseMonth.month });
+  }
+  function filterMonthEntries(entries, cutoffKey) {
+    if (!cutoffKey) return entries;
+    return entries.filter(function (e) { return e.month >= cutoffKey; });
+  }
+
+  // ─── v3-helpers ──────────────────────────────────────────────────────────
+  function zeroCorrected(original) { return { original: original, correctionFactor: 1, corrected: original, correctionAmount: 0 }; }
+  function buildDefaultSalaryHistory(startDate, endDate, lastSalary, baseSalary) {
+    var months = generateMonthRange(toMonthRange(startDate), toMonthRange(endDate));
+    return months.map(function (m) { return { month: monthRangeKey(m), baseSalary: baseSalary, lastSalary: lastSalary }; });
+  }
+
+  // ─── fgts-calculator ─────────────────────────────────────────────────────
+  function calculateFgtsMonthly(salaryHistory, fgtsRate, table, liquidationMonth, include13thBase, includeAvisoPrevioBase) {
+    include13thBase = include13thBase || 0; includeAvisoPrevioBase = includeAvisoPrevioBase || 0;
+    var monthlyEntries = []; var totalDeposit = 0; var totalCorrected = 0;
+    var liquidKey = monthRangeKey(liquidationMonth);
+    var correctedEntries = correctMonthlyValues(
+      salaryHistory.map(function (s) { return { month: s.month, value: round(s.lastSalary * fgtsRate) }; }),
+      table, liquidationMonth
+    );
+    for (var i = 0; i < salaryHistory.length; i++) {
+      var salary = salaryHistory[i];
+      var deposit = round(salary.lastSalary * fgtsRate);
+      var corrected = correctedEntries[i] ? correctedEntries[i].corrected : deposit;
+      var correctionAmount = correctedEntries[i] ? correctedEntries[i].correctionAmount : 0;
+      var interestRate = calculateAdc58InterestRate(table, salary.month, liquidKey);
+      var interest = round(corrected * interestRate);
+      totalDeposit = round(totalDeposit + deposit);
+      totalCorrected = round(totalCorrected + corrected);
+      monthlyEntries.push({ month: salary.month, base: salary.lastSalary, aliquot: fgtsRate, deposit: deposit, corrected: corrected, correctionAmount: correctionAmount, interest: interest, total: round(corrected + interest) });
+    }
+    var lastMonth = salaryHistory.length ? salaryHistory[salaryHistory.length - 1].month : liquidKey;
+    if (include13thBase > 0) {
+      var deposit13 = round(include13thBase * fgtsRate);
+      var c13 = correctMonthlyValues([{ month: lastMonth, value: deposit13 }], table, liquidationMonth);
+      var corrected13 = c13[0] ? c13[0].corrected : deposit13;
+      totalDeposit = round(totalDeposit + deposit13); totalCorrected = round(totalCorrected + corrected13);
+    }
+    if (includeAvisoPrevioBase > 0) {
+      var depositAP = round(includeAvisoPrevioBase * fgtsRate);
+      var cAP = correctMonthlyValues([{ month: lastMonth, value: depositAP }], table, liquidationMonth);
+      var correctedAP = cAP[0] ? cAP[0].corrected : depositAP;
+      totalDeposit = round(totalDeposit + depositAP); totalCorrected = round(totalCorrected + correctedAP);
+    }
+    var totalInterest = round(monthlyEntries.reduce(function (s, e) { return round(s + e.interest); }, 0));
+    var totalFgts = round(totalCorrected + totalInterest);
+    var fineBase = totalCorrected;
+    var fineValue = round(fineBase * 0.4);
+    var fce = correctMonthlyValues([{ month: lastMonth, value: fineValue }], table, liquidationMonth);
+    var fineCorrected = fce[0] ? fce[0].corrected : fineValue;
+    return { monthlyEntries: monthlyEntries, totalDeposit: totalDeposit, totalCorrected: totalCorrected, totalInterest: totalInterest, totalFgts: totalFgts, fineBase: fineBase, fineValue: fineValue, fineCorrected: fineCorrected };
+  }
+
+  // ─── inss-calculator ─────────────────────────────────────────────────────
+  var INSS_BRACKETS_2025 = [
+    { min: 0, max: 1412, rate: 0.075, deduction: 0 },
+    { min: 1412.01, max: 2666.68, rate: 0.09, deduction: 21.18 },
+    { min: 2666.69, max: 4000.03, rate: 0.12, deduction: 101.18 },
+    { min: 4000.04, max: 7786.02, rate: 0.14, deduction: 181.18 }
+  ];
+  var INSS_TETO_2025 = 951.63;
+  function calculateInssOnValue(value, brackets) {
+    brackets = brackets || INSS_BRACKETS_2025;
+    var total = 0;
+    for (var i = 0; i < brackets.length; i++) {
+      var b = brackets[i];
+      if (value <= b.min) break;
+      var baseInBracket = Math.min(value, b.max) - b.min;
+      total += baseInBracket * b.rate;
+    }
+    return round(total);
+  }
+  function calculateInssEmployee(monthlyBases, brackets, teto) {
+    brackets = brackets || INSS_BRACKETS_2025; teto = teto == null ? INSS_TETO_2025 : teto;
+    var entries = []; var total = 0;
+    for (var i = 0; i < monthlyBases.length; i++) {
+      var mb = monthlyBases[i];
+      var contribution = calculateInssOnValue(mb.value, brackets);
+      var limited = Math.min(contribution, teto);
+      total = round(total + limited);
+      entries.push({ month: mb.month, base: mb.value, rate: contribution / mb.value, contribution: round(contribution), limitedContribution: round(limited) });
+    }
+    return { entries: entries, total: round(total) };
+  }
+  function calculateInssEmployer(monthlyBases, employerRate, satRate) {
+    employerRate = employerRate == null ? 0.2 : employerRate; satRate = satRate == null ? 0.03 : satRate;
+    var entries = []; var totalEmployer = 0; var totalSat = 0;
+    for (var i = 0; i < monthlyBases.length; i++) {
+      var mb = monthlyBases[i];
+      var ec = round(mb.value * employerRate);
+      var sc = round(mb.value * satRate);
+      totalEmployer = round(totalEmployer + ec); totalSat = round(totalSat + sc);
+      entries.push({ month: mb.month, base: mb.value, employerRate: employerRate, employerContribution: ec, satRate: satRate, satContribution: sc });
+    }
+    return { entries: entries, totalEmployer: round(totalEmployer), totalSat: round(totalSat), total: round(totalEmployer + totalSat) };
+  }
+
+  // ─── irpf-calculator ─────────────────────────────────────────────────────
+  var IRPF_BRACKETS_2025 = [
+    { min: 0, max: 12144, rate: 0, deduction: 0 },
+    { min: 12144.01, max: 25188, rate: 0.075, deduction: 910.8 },
+    { min: 25188.01, max: 37944, rate: 0.15, deduction: 2802.72 },
+    { min: 37944.01, max: 50352, rate: 0.225, deduction: 5646.24 },
+    { min: 50352.01, max: Infinity, rate: 0.275, deduction: 8161.92 }
+  ];
+  function calculateIrpfAcumulado(totalRemuneration, inssDeduction, dependents, dependentDeduction, brackets) {
+    inssDeduction = inssDeduction || 0; dependents = dependents || 0;
+    dependentDeduction = dependentDeduction == null ? 189.59 : dependentDeduction;
+    brackets = brackets || IRPF_BRACKETS_2025;
+    var base = round(totalRemuneration - inssDeduction - dependents * dependentDeduction);
+    if (base <= 0) return { base: 0, brackets: brackets, applicableBracket: brackets[0], taxDue: 0, effectiveRate: 0 };
+    var applicableBracket = brackets[0];
+    for (var i = 0; i < brackets.length; i++) if (base >= brackets[i].min) applicableBracket = brackets[i];
+    var taxDue = round(Math.max(0, base * applicableBracket.rate - applicableBracket.deduction));
+    var effectiveRate = base > 0 ? round((taxDue / base) * 100) : 0;
+    return { base: base, brackets: brackets, applicableBracket: applicableBracket, taxDue: taxDue, effectiveRate: effectiveRate };
+  }
+
+  // ─── court-costs-calculator ──────────────────────────────────────────────
+  function calculateCustasJudiciais(totalDevidoReclamado, rate, piso, teto) {
+    rate = rate == null ? 0.02 : rate; piso = piso == null ? 10.64 : piso; teto = teto == null ? 33902.2 : teto;
+    var calculated = round(totalDevidoReclamado * rate);
+    var total = Math.max(piso, Math.min(calculated, teto * rate));
+    return { base: totalDevidoReclamado, rate: rate, piso: piso, teto: teto, total: round(total) };
+  }
+  function calculateHonorariosSucumbencia(brutoDevidoReclamante, rate) {
+    rate = rate == null ? 0.15 : rate;
+    var honorarios = round(brutoDevidoReclamante * rate);
+    var irpf = 0;
+    if (honorarios > 684.72) {
+      var ar = 0, ded = 0;
+      if (honorarios <= 924.6) { ar = 0.075; ded = 51.35; }
+      else if (honorarios <= 1248.3) { ar = 0.15; ded = 120.69; }
+      else if (honorarios <= 2213.4) { ar = 0.225; ded = 214.27; }
+      else { ar = 0.275; ded = 324.89; }
+      irpf = round(Math.max(0, honorarios * ar - ded));
+    }
+    var liquido = round(honorarios - irpf);
+    return { base: brutoDevidoReclamante, rate: rate, honorarios: honorarios, irpf: irpf, liquido: liquido };
+  }
+
+  // ─── salary-difference-calculator ────────────────────────────────────────
+  function calculateSalaryDifference(input, salaryHist, fallbackSalary, table, liquidationMonth, contractStartKey, contractEndKey, cutoffKey, avos13, avosVacation, avisoPrevioDays) {
+    var receivedByMonth = new Map(salaryHist.map(function (s) { return [s.month, s.lastSalary]; }));
+    var diffValues = []; var dueByMonth = new Map(); var receivedUsedByMonth = new Map();
+    for (var p = 0; p < input.periods.length; p++) {
+      var period = input.periods[p];
+      var months = generateMonthRange(parseMonthRangeKey(period.startMonth), parseMonthRangeKey(period.endMonth));
+      for (var i = 0; i < months.length; i++) {
+        var key = monthRangeKey(months[i]);
+        if (key < contractStartKey || key > contractEndKey) continue;
+        var received = period.receivedSalary != null ? period.receivedSalary : (receivedByMonth.has(key) ? receivedByMonth.get(key) : fallbackSalary);
+        var diff = round(Math.max(0, period.dueSalary - received));
+        if (diff <= 0) continue;
+        dueByMonth.set(key, period.dueSalary); receivedUsedByMonth.set(key, received);
+        diffValues.push({ month: key, value: diff });
+      }
+    }
+    var inRange = filterMonthEntries(diffValues, cutoffKey).sort(function (a, b) { return a.month.localeCompare(b.month); });
+    if (inRange.length === 0) return { detail: { monthlyEntries: [], totalDiff: 0, totalCorrected: 0, totalInterest: 0, reflexo13: 0, reflexoVacation: 0, reflexoAviso: 0 }, diffByMonth: {}, monthlyAverage: 0 };
+    var liquidKey = monthRangeKey(liquidationMonth);
+    var corrected = correctMonthlyValues(inRange.map(function (e) { return { month: e.month, value: e.value }; }), table, liquidationMonth);
+    var monthlyEntries = []; var diffByMonth = {}; var totalDiff = 0; var totalCorrected = 0; var totalInterest = 0;
+    for (var c = 0; c < corrected.length; c++) {
+      var entry = corrected[c];
+      var rate = calculateAdc58InterestRate(table, entry.month, liquidKey);
+      var interest = round(entry.corrected * rate);
+      totalDiff = round(totalDiff + entry.original); totalCorrected = round(totalCorrected + entry.corrected); totalInterest = round(totalInterest + interest);
+      diffByMonth[entry.month] = entry.original;
+      monthlyEntries.push({ month: entry.month, due: dueByMonth.get(entry.month) || 0, received: receivedUsedByMonth.get(entry.month) || 0, diff: entry.original, corrected: entry.corrected, correctionAmount: entry.correctionAmount, interest: interest, total: round(entry.corrected + interest) });
+    }
+    var monthlyAverage = round(totalDiff / monthlyEntries.length);
+    var reflexo13 = 0, reflexoVacation = 0, reflexoAviso = 0;
+    if (input.applyReflexos) {
+      reflexo13 = round(monthlyAverage * (avos13 / 12));
+      reflexoVacation = round(monthlyAverage * (avosVacation / 12) * (4 / 3));
+      var lastDiff = monthlyEntries.length ? monthlyEntries[monthlyEntries.length - 1].diff : 0;
+      reflexoAviso = round((lastDiff / 30) * avisoPrevioDays);
+    }
+    return { detail: { monthlyEntries: monthlyEntries, totalDiff: totalDiff, totalCorrected: totalCorrected, totalInterest: totalInterest, reflexo13: reflexo13, reflexoVacation: reflexoVacation, reflexoAviso: reflexoAviso }, diffByMonth: diffByMonth, monthlyAverage: monthlyAverage };
+  }
+
+  // ─── custom-verbas-calculator ────────────────────────────────────────────
+  function calculateCustomVerbas(verbas, table, liquidationMonth, cutoffKey) {
+    var liquidKey = monthRangeKey(liquidationMonth);
+    var details = []; var salarialByMonth = {}; var totalBruto = 0; var totalCorrigido = 0; var totalInterest = 0; var salarialTotal = 0; var salarialMonths = 0;
+    for (var v = 0; v < verbas.length; v++) {
+      var verba = verbas[v];
+      var months = generateMonthRange(parseMonthRangeKey(verba.startMonth), parseMonthRangeKey(verba.endMonth));
+      var monthValues = filterMonthEntries(months.map(function (m) { return { month: monthRangeKey(m), value: verba.monthlyValue }; }), cutoffKey);
+      var corrected = correctMonthlyValues(monthValues, table, liquidationMonth);
+      var monthlyEntries = []; var bruto = 0; var corrigido = 0; var juros = 0;
+      for (var c = 0; c < corrected.length; c++) {
+        var entry = corrected[c];
+        var rate = calculateAdc58InterestRate(table, entry.month, liquidKey);
+        var interest = round(entry.corrected * rate);
+        bruto = round(bruto + entry.original); corrigido = round(corrigido + entry.corrected); juros = round(juros + interest);
+        if (verba.nature === "salarial") {
+          salarialByMonth[entry.month] = round((salarialByMonth[entry.month] || 0) + entry.original);
+          salarialTotal = round(salarialTotal + entry.original); salarialMonths++;
+        }
+        monthlyEntries.push({ month: entry.month, value: entry.original, corrected: entry.corrected, correctionAmount: entry.correctionAmount, interest: interest, total: round(entry.corrected + interest) });
+      }
+      totalBruto = round(totalBruto + bruto); totalCorrigido = round(totalCorrigido + corrigido); totalInterest = round(totalInterest + juros);
+      details.push({ name: verba.name, nature: verba.nature, bruto: bruto, corrigido: corrigido, juros: juros, total: round(corrigido + juros), monthlyEntries: monthlyEntries });
+    }
+    return { details: details, totalBruto: totalBruto, totalCorrigido: totalCorrigido, totalInterest: totalInterest, salarialByMonth: salarialByMonth, salarialMonthlyAverage: salarialMonths > 0 ? round(salarialTotal / salarialMonths) : 0 };
+  }
+
+  // ─── labor-calculation-v3 (cálculo de liquidação completo da plataforma) ──
+  function calculateLaborV3(input, table, ENV) {
+    table = table || defaultIndexTable;
+    ENV = ENV || { MINIMUM_WAGE: 1621, FGTS_RATE: 0.08 };
+
+    var startDate = input.startDate, endDate = input.endDate, lastSalary = input.lastSalary, baseSalary = input.baseSalary;
+    var vacationVencidasCount = input.vacationVencidasCount, applyArt477Fine = input.applyArt477Fine;
+    var priorNoticeWorked = input.priorNoticeWorked, extraHours = input.extraHours || 0, nightHours = input.nightHours || 0;
+    var insalubrityLevel = input.insalubrityLevel || 0, dangerousWork = input.dangerousWork, lastThreeSalariesAvg = input.lastThreeSalariesAvg;
+    var terminationType = input.terminationType, salaryHistory = input.salaryHistory, unpaidSalaries = input.unpaidSalaries;
+    var liquidationDate = input.liquidationDate;
+    var nightAdditionalPercent = input.nightAdditionalPercent == null ? 20 : input.nightAdditionalPercent;
+    var satRate = input.satRate == null ? 0.03 : input.satRate;
+    var employerInssRate = input.employerInssRate == null ? 0.2 : input.employerInssRate;
+    var honorariosRate = input.honorariosRate == null ? 0.15 : input.honorariosRate;
+    var irpfDependents = input.irpfDependents || 0;
+    var applyArt467 = input.applyArt467 || false;
+    var applyPrescricaoQuinquenal = input.applyPrescricaoQuinquenal || false;
+    var salaryDifference = input.salaryDifference, customVerbas = input.customVerbas, filingDate = input.filingDate;
+
+    var minimumWage = ENV.MINIMUM_WAGE;
+    var fgtsRate = ENV.FGTS_RATE;
+    var liquidation = liquidationDate || new Date();
+    var liquidationMonth = toMonthRange(liquidation);
+    var endMonth = toMonthRange(endDate);
+
+    var cutoffKey = applyPrescricaoQuinquenal ? getPrescricaoCutoffKey(filingDate || liquidation) : undefined;
+
+    var isSemJustaCausa = terminationType === "sem_justa_causa" || terminationType === "rescisao_indireta";
+    var isComJustaCausa = terminationType === "com_justa_causa";
+
+    var worked = countWorkedMonths(startDate, endDate);
+    var avisoPrevioDays = (!isComJustaCausa && !priorNoticeWorked) ? calculateAvisoPrevioDays(worked.years) : 0;
+    var projectedEnd = (!isComJustaCausa && !priorNoticeWorked) ? projectEndDate(endDate, worked.years, priorNoticeWorked) : endDate;
+
+    var hourlyRate = round(lastSalary / 220);
+    var extraHoursValue = round(extraHours * hourlyRate * 1.5);
+    var nightAdditionalMultiplier = 1 + nightAdditionalPercent / 100;
+    var nightAdditionalValue = round(nightHours * hourlyRate * nightAdditionalMultiplier);
+    var insalubrityValue = round(minimumWage * (insalubrityLevel / 100) * worked.totalMonths);
+    var dangerousWorkValue = dangerousWork ? round(baseSalary * 0.3 * worked.totalMonths) : 0;
+
+    var intervalIntrajornadaHoursInput = input.intervalIntrajornadaHours || 0;
+    var intervalIntrajornadaValue = round(intervalIntrajornadaHoursInput * hourlyRate * 1.5 * worked.totalMonths);
+
+    var transferAdditionalMonths = input.transferAdditionalMonths || 0;
+    var transferAdditionalValue = round(baseSalary * 0.25 * transferAdditionalMonths);
+
+    var DSR_FACTOR = 0.1818;
+    var dsrValue = input.applyDsrOnExtra ? round((extraHoursValue + nightAdditionalValue) * DSR_FACTOR) : 0;
+
+    var stabilityMonths = input.stabilityMonths || 0;
+    var stabilitySalaries = round(lastSalary * stabilityMonths);
+    var stabilityValue = stabilityMonths > 0
+      ? round(stabilitySalaries + (lastSalary * stabilityMonths) / 12 + ((lastSalary * stabilityMonths) / 12) * (4 / 3) + stabilitySalaries * fgtsRate)
+      : 0;
+
+    var deductionsValue = round((input.fgtsAlreadyDeposited || 0) + (input.amountsAlreadyPaid || 0));
+
+    var priorNoticeValue = 0;
+    if (!isComJustaCausa && !priorNoticeWorked) priorNoticeValue = round((lastSalary / 30) * avisoPrevioDays);
+
+    var avos13th = !isComJustaCausa ? count13thAvos(startDate, endDate, projectedEnd) : 0;
+    var thirteenthSalaryValue = round((lastSalary / 12) * avos13th);
+
+    var avosVacation = !isComJustaCausa ? countVacationAvos(startDate, projectedEnd) : 0;
+    var vacationBase = lastSalary + lastSalary / 3;
+    var proportionalVacationAvos = avosVacation;
+    var vacationValueProportional = round((vacationBase / 12) * proportionalVacationAvos);
+    var doubleVacationValue = round(vacationVencidasCount * vacationBase);
+    var vacationValue = round(vacationValueProportional + doubleVacationValue);
+
+    var art477FineValue = applyArt477Fine ? round(lastSalary) : 0;
+
+    var saldoSalarioValue = 0;
+    var saldoEntries = [];
+    var unpaidInRange = filterMonthEntries(unpaidSalaries || [], cutoffKey);
+    if (unpaidInRange.length > 0) {
+      for (var u = 0; u < unpaidInRange.length; u++) {
+        var us = unpaidInRange[u];
+        var daily = round(lastSalary / 30);
+        var value = round(daily * us.daysWorked);
+        saldoSalarioValue = round(saldoSalarioValue + value);
+        saldoEntries.push({ month: us.month, value: value });
+      }
+    }
+
+    var fullSalaryHist = (salaryHistory && salaryHistory.length > 0) ? salaryHistory : buildDefaultSalaryHistory(startDate, endDate, lastSalary, baseSalary);
+    var salaryHist = filterMonthEntries(fullSalaryHist, cutoffKey);
+    var prescricaoMonthsCut = fullSalaryHist.length - salaryHist.length;
+
+    var contractStartKey = monthRangeKey(toMonthRange(startDate));
+    var contractEndKey = monthRangeKey(endMonth);
+    var salaryDiffResult = (salaryDifference && salaryDifference.periods.length > 0)
+      ? calculateSalaryDifference(salaryDifference, salaryHist, lastSalary, table, liquidationMonth, contractStartKey, contractEndKey, cutoffKey, avos13th, proportionalVacationAvos, avisoPrevioDays)
+      : null;
+
+    var customVerbasResult = (customVerbas && customVerbas.length > 0) ? calculateCustomVerbas(customVerbas, table, liquidationMonth, cutoffKey) : null;
+
+    var diffByMonth = salaryDiffResult ? salaryDiffResult.diffByMonth : {};
+    var customSalarialByMonth = customVerbasResult ? customVerbasResult.salarialByMonth : {};
+    var hasFgtsBaseIncrement = Object.keys(diffByMonth).length > 0 || Object.keys(customSalarialByMonth).length > 0;
+    var effectiveSalaryHist = hasFgtsBaseIncrement
+      ? salaryHist.map(function (s) { return { month: s.month, baseSalary: s.baseSalary, lastSalary: round(s.lastSalary + (diffByMonth[s.month] || 0) + (customSalarialByMonth[s.month] || 0)) }; })
+      : salaryHist;
+
+    var fgtsResult = !isComJustaCausa
+      ? calculateFgtsMonthly(effectiveSalaryHist, fgtsRate, table, liquidationMonth, thirteenthSalaryValue, priorNoticeValue)
+      : { monthlyEntries: [], totalDeposit: 0, totalCorrected: 0, totalInterest: 0, totalFgts: 0, fineBase: 0, fineValue: 0, fineCorrected: 0 };
+
+    var fgtsFineValue = isSemJustaCausa ? round(fgtsResult.fineValue) : 0;
+    var fgtsFineCorrected = isSemJustaCausa ? round(fgtsResult.fineCorrected) : 0;
+
+    var unemploymentInsuranceValue = 0;
+    if (isSemJustaCausa) {
+      if (lastThreeSalariesAvg <= 2222.17) unemploymentInsuranceValue = lastThreeSalariesAvg * 0.8;
+      else if (lastThreeSalariesAvg <= 3703.99) unemploymentInsuranceValue = (lastThreeSalariesAvg - 2222.17) * 0.5 + 1777.74;
+      else unemploymentInsuranceValue = 2518.65;
+      unemploymentInsuranceValue = round(unemploymentInsuranceValue);
+    }
+
+    var hoursAdditionalsMonthly = worked.totalMonths > 0 ? round((extraHoursValue + nightAdditionalValue) / worked.totalMonths) : 0;
+    var reflexo13thValue = !isComJustaCausa ? round(hoursAdditionalsMonthly * (avos13th / 12)) : 0;
+    var paidVacationCount = isComJustaCausa ? vacationVencidasCount : proportionalVacationAvos;
+    var reflexoVacationValue = round(hoursAdditionalsMonthly * (paidVacationCount / 12) * (4 / 3));
+    var reflexoFGTSValue = !isComJustaCausa ? round((extraHoursValue + nightAdditionalValue) * fgtsRate) : 0;
+    var reflexoMultaFGTSValue = isSemJustaCausa ? round(reflexoFGTSValue * 0.4) : 0;
+
+    var correctionPriorNotice = priorNoticeValue > 0 ? correctValue(priorNoticeValue, table, endMonth, liquidationMonth) : zeroCorrected(priorNoticeValue);
+    var correction13th = thirteenthSalaryValue > 0 ? correctValue(thirteenthSalaryValue, table, endMonth, liquidationMonth) : zeroCorrected(thirteenthSalaryValue);
+    var correctionVacation = vacationValue > 0 ? correctValue(vacationValue, table, endMonth, liquidationMonth) : zeroCorrected(vacationValue);
+    var correctionArt477 = art477FineValue > 0 ? correctValue(art477FineValue, table, endMonth, liquidationMonth) : zeroCorrected(art477FineValue);
+
+    var correctionSaldoEntries = saldoEntries.length > 0 ? correctMonthlyValues(saldoEntries, table, liquidationMonth) : [];
+    var correctionSaldo = saldoSalarioValue > 0
+      ? { original: saldoSalarioValue, correctionFactor: correctionSaldoEntries.length > 0 ? correctionSaldoEntries[correctionSaldoEntries.length - 1].correctionFactor : 1, corrected: round(correctionSaldoEntries.reduce(function (s, e) { return s + e.corrected; }, 0)), correctionAmount: round(correctionSaldoEntries.reduce(function (s, e) { return s + e.correctionAmount; }, 0)) }
+      : zeroCorrected(0);
+
+    var salaryMonthEntries = {};
+    var salaryMonthValues = salaryHist.map(function (s) { return { month: s.month, value: s.lastSalary }; });
+    var correctedSalaries = correctMonthlyValues(salaryMonthValues, table, liquidationMonth);
+    for (var q = 0; q < correctedSalaries.length; q++) {
+      var cs = correctedSalaries[q];
+      salaryMonthEntries[cs.month] = { original: cs.original, correctionFactor: cs.correctionFactor, corrected: cs.corrected, correctionAmount: cs.correctionAmount };
+    }
+
+    var liquidKey = monthRangeKey(liquidationMonth);
+    var endMonthKey = monthRangeKey(endMonth);
+    var termInterestRate = calculateAdc58InterestRate(table, endMonthKey, liquidKey);
+    var interestPriorNotice = round(correctionPriorNotice.corrected * termInterestRate);
+    var interest13th = round(correction13th.corrected * termInterestRate);
+    var interestVacation = round(correctionVacation.corrected * termInterestRate);
+    var interestArt477 = round(correctionArt477.corrected * termInterestRate);
+    var interestSaldo = round(correctionSaldo.corrected * termInterestRate);
+    var interestFgts = round(fgtsResult.totalInterest);
+    var interestFgtsFine = round(fgtsFineCorrected * termInterestRate);
+
+    var salaryMonthInterest = {};
+    for (var r2 = 0; r2 < correctedSalaries.length; r2++) {
+      var cs2 = correctedSalaries[r2];
+      var rate2 = calculateAdc58InterestRate(table, cs2.month, liquidKey);
+      salaryMonthInterest[cs2.month] = round(cs2.corrected * rate2);
+    }
+
+    var diffDetail = salaryDiffResult ? salaryDiffResult.detail : undefined;
+    var salaryDifferenceValue = diffDetail ? diffDetail.totalDiff : 0;
+    var correctionSalaryDiff = (diffDetail && diffDetail.totalDiff > 0)
+      ? { original: diffDetail.totalDiff, correctionFactor: diffDetail.totalCorrected / diffDetail.totalDiff, corrected: diffDetail.totalCorrected, correctionAmount: round(diffDetail.totalCorrected - diffDetail.totalDiff) }
+      : zeroCorrected(0);
+    var salaryDifferenceReflexosValue = diffDetail ? round(diffDetail.reflexo13 + diffDetail.reflexoVacation + diffDetail.reflexoAviso) : 0;
+    var correctionDiffReflexos = salaryDifferenceReflexosValue > 0 ? correctValue(salaryDifferenceReflexosValue, table, endMonth, liquidationMonth) : zeroCorrected(0);
+    var interestDiffReflexos = round(correctionDiffReflexos.corrected * termInterestRate);
+    var interestSalaryDifference = round((diffDetail ? diffDetail.totalInterest : 0) + interestDiffReflexos);
+    var reflexo13DiffCorrected = round((diffDetail ? diffDetail.reflexo13 : 0) * correctionDiffReflexos.correctionFactor);
+
+    var outrasVerbasValue = customVerbasResult ? customVerbasResult.totalBruto : 0;
+    var customSalarialAvg = customVerbasResult ? customVerbasResult.salarialMonthlyAverage : 0;
+    var reflexo13Custom = round(customSalarialAvg * (avos13th / 12));
+    var reflexoVacationCustom = round(customSalarialAvg * (proportionalVacationAvos / 12) * (4 / 3));
+    var customVerbasReflexosValue = round(reflexo13Custom + reflexoVacationCustom);
+    var correctionCustomReflexos = customVerbasReflexosValue > 0 ? correctValue(customVerbasReflexosValue, table, endMonth, liquidationMonth) : zeroCorrected(0);
+    var interestCustomReflexos = round(correctionCustomReflexos.corrected * termInterestRate);
+    var interestCustomVerbas = round((customVerbasResult ? customVerbasResult.totalInterest : 0) + interestCustomReflexos);
+    var reflexo13CustomCorrected = round(reflexo13Custom * correctionCustomReflexos.correctionFactor);
+    var customSalarialCorrigido = customVerbasResult ? round(customVerbasResult.details.filter(function (d) { return d.nature === "salarial"; }).reduce(function (s, d) { return s + d.corrigido; }, 0)) : 0;
+
+    var art467Value = applyArt467 ? round(0.5 * (correctionVacation.corrected + correction13th.corrected + correctionPriorNotice.corrected + fgtsFineCorrected)) : 0;
+    var correctionArt467 = art467Value > 0 ? { original: art467Value, correctionFactor: 1, corrected: art467Value, correctionAmount: 0 } : zeroCorrected(0);
+
+    var totalInterest = round(interestPriorNotice + interest13th + interestVacation + interestArt477 + interestSaldo + interestFgts + interestFgtsFine + interestSalaryDifference + interestCustomVerbas);
+
+    var inssBases = [];
+    if (!isComJustaCausa) {
+      for (var se = 0; se < saldoEntries.length; se++) inssBases.push({ month: saldoEntries[se].month, value: saldoEntries[se].value });
+      inssBases.push({ month: monthRangeKey(endMonth), value: thirteenthSalaryValue });
+    }
+    if (diffDetail) {
+      for (var de = 0; de < diffDetail.monthlyEntries.length; de++) inssBases.push({ month: diffDetail.monthlyEntries[de].month, value: diffDetail.monthlyEntries[de].diff });
+      if (diffDetail.reflexo13 > 0) inssBases.push({ month: monthRangeKey(endMonth), value: diffDetail.reflexo13 });
+    }
+    Object.keys(customSalarialByMonth).forEach(function (month) { inssBases.push({ month: month, value: customSalarialByMonth[month] }); });
+    if (reflexo13Custom > 0) inssBases.push({ month: monthRangeKey(endMonth), value: reflexo13Custom });
+    var inssEmployeeResult = calculateInssEmployee(inssBases);
+    var inssEmployeeValue = inssEmployeeResult.total;
+    var inssEmployerResult = calculateInssEmployer(inssBases, employerInssRate, satRate);
+
+    var totalRemuneratorio = round(correction13th.corrected + correctionSaldo.corrected + extraHoursValue + nightAdditionalValue + correctionSalaryDiff.corrected + reflexo13DiffCorrected + customSalarialCorrigido + reflexo13CustomCorrected);
+    var irpfResult = calculateIrpfAcumulado(totalRemuneratorio, inssEmployeeValue, irpfDependents);
+
+    var brutoDevidoReclamante = round(
+      correctionPriorNotice.corrected + correction13th.corrected + correctionVacation.corrected + correctionArt477.corrected + correctionSaldo.corrected +
+      round(fgtsResult.totalCorrected) + fgtsFineCorrected + extraHoursValue + nightAdditionalValue + insalubrityValue + dangerousWorkValue +
+      reflexo13thValue + reflexoVacationValue + reflexoFGTSValue + reflexoMultaFGTSValue + correctionSalaryDiff.corrected + correctionDiffReflexos.corrected +
+      (customVerbasResult ? customVerbasResult.totalCorrigido : 0) + correctionCustomReflexos.corrected + art467Value + intervalIntrajornadaValue +
+      transferAdditionalValue + dsrValue + stabilityValue + totalInterest - deductionsValue
+    );
+
+    var totalDescontos = round(inssEmployeeValue + irpfResult.taxDue);
+    var liquidoDevidoReclamante = round(brutoDevidoReclamante - totalDescontos);
+
+    var honorariosResult = calculateHonorariosSucumbencia(brutoDevidoReclamante, honorariosRate);
+    var subtotalReclamado = round(liquidoDevidoReclamante + inssEmployerResult.totalEmployer + inssEmployerResult.totalSat + honorariosResult.honorarios + irpfResult.taxDue);
+    var custasResult = calculateCustasJudiciais(subtotalReclamado);
+    var totalDevidoReclamado = round(subtotalReclamado + custasResult.total);
+
+    var percentualRemuneratorio = brutoDevidoReclamante > 0 ? round((totalRemuneratorio / brutoDevidoReclamante) * 100) : 0;
+    var fgtsValue = round(fgtsResult.totalFgts);
+
+    var totalValue = round(
+      priorNoticeValue + thirteenthSalaryValue + vacationValue + fgtsValue + fgtsFineValue + unemploymentInsuranceValue + extraHoursValue + nightAdditionalValue +
+      insalubrityValue + dangerousWorkValue + art477FineValue + reflexo13thValue + reflexoVacationValue + reflexoFGTSValue + reflexoMultaFGTSValue + saldoSalarioValue +
+      salaryDifferenceValue + salaryDifferenceReflexosValue + outrasVerbasValue + customVerbasReflexosValue + art467Value + intervalIntrajornadaValue +
+      transferAdditionalValue + dsrValue + stabilityValue - deductionsValue
+    );
+
+    var verbasDetalhadas = [
+      { name: "13º Salário", legalRef: "CLT art. 7º, VIII / Lei 4.090/1962", bruto: thirteenthSalaryValue, juros: interest13th, corrigido: correction13th.corrected, total: round(correction13th.corrected + interest13th) },
+      { name: "Aviso Prévio", legalRef: "CLT art. 487 / Lei 12.506/2011", bruto: priorNoticeValue, juros: interestPriorNotice, corrigido: correctionPriorNotice.corrected, total: round(correctionPriorNotice.corrected + interestPriorNotice) },
+      { name: "Férias + 1/3", legalRef: "CF art. 7º, XVII / CLT art. 129 e 146", bruto: vacationValue, juros: interestVacation, corrigido: correctionVacation.corrected, total: round(correctionVacation.corrected + interestVacation) },
+      { name: "Multa Art. 477 CLT", legalRef: "CLT art. 477, §8º", bruto: art477FineValue, juros: interestArt477, corrigido: correctionArt477.corrected, total: round(correctionArt477.corrected + interestArt477) },
+      { name: "Saldo de Salário", legalRef: "CLT art. 457 e 462", bruto: saldoSalarioValue, juros: interestSaldo, corrigido: correctionSaldo.corrected, total: round(correctionSaldo.corrected + interestSaldo) },
+      { name: "FGTS 8%", legalRef: "Lei 8.036/1990, art. 15", bruto: round(fgtsResult.totalDeposit), juros: interestFgts, corrigido: round(fgtsResult.totalCorrected), total: fgtsResult.totalFgts },
+      { name: "Multa FGTS 40%", legalRef: "Lei 8.036/1990, art. 18, §1º", bruto: fgtsFineValue, juros: interestFgtsFine, corrigido: fgtsFineCorrected, total: round(fgtsFineCorrected + interestFgtsFine) }
+    ];
+    // Adicionais e reflexos como linhas próprias: a soma dos totais tem de
+    // fechar com brutoDevidoReclamante, senão o laudo não se sustenta item a item.
+    var adicionais = [
+      { value: extraHoursValue, name: "Horas Extras 50%", legalRef: "CLT art. 59 / CF art. 7º, XVI" },
+      { value: nightAdditionalValue, name: "Adicional Noturno " + nightAdditionalPercent + "%", legalRef: "CLT art. 73" },
+      { value: insalubrityValue, name: "Adicional de Insalubridade " + insalubrityLevel + "%", legalRef: "CLT art. 192" },
+      { value: dangerousWorkValue, name: "Adicional de Periculosidade 30%", legalRef: "CLT art. 193, §1º" },
+      { value: reflexo13thValue, name: "Reflexos dos Adicionais no 13º", legalRef: "TST Súmula 45 e 264" },
+      { value: reflexoVacationValue, name: "Reflexos dos Adicionais nas Férias + 1/3", legalRef: "TST Súmula 151 e 264" },
+      { value: reflexoFGTSValue, name: "Reflexos dos Adicionais no FGTS", legalRef: "TST Súmula 63" },
+      { value: reflexoMultaFGTSValue, name: "Reflexos dos Adicionais na Multa de 40%", legalRef: "Lei 8.036/1990, art. 18, §1º" }
+    ];
+    for (var ad = 0; ad < adicionais.length; ad++) {
+      var adicional = adicionais[ad];
+      if (adicional.value <= 0) continue;
+      verbasDetalhadas.push({ name: adicional.name, legalRef: adicional.legalRef, bruto: adicional.value, juros: 0, corrigido: adicional.value, total: adicional.value });
+    }
+    if (diffDetail && salaryDifferenceValue > 0) {
+      verbasDetalhadas.push({ name: (salaryDifference && salaryDifference.type === "desvio_funcao") ? "Diferenças Salariais (Desvio de Função)" : "Diferenças Salariais (Equiparação Art. 461)", bruto: salaryDifferenceValue, juros: diffDetail.totalInterest, corrigido: diffDetail.totalCorrected, total: round(diffDetail.totalCorrected + diffDetail.totalInterest) });
+      if (salaryDifferenceReflexosValue > 0) verbasDetalhadas.push({ name: "Reflexos das Diferenças Salariais", legalRef: "TST Súmula 264", bruto: salaryDifferenceReflexosValue, juros: interestDiffReflexos, corrigido: correctionDiffReflexos.corrected, total: round(correctionDiffReflexos.corrected + interestDiffReflexos) });
+    }
+    if (customVerbasResult) {
+      for (var cd = 0; cd < customVerbasResult.details.length; cd++) {
+        var detail = customVerbasResult.details[cd];
+        verbasDetalhadas.push({ name: "Outras Verbas — " + detail.name, legalRef: "CLT art. 457, §1º", bruto: detail.bruto, juros: detail.juros, corrigido: detail.corrigido, total: detail.total });
+      }
+      if (customVerbasReflexosValue > 0) verbasDetalhadas.push({ name: "Reflexos de Outras Verbas", legalRef: "TST Súmula 264", bruto: customVerbasReflexosValue, juros: interestCustomReflexos, corrigido: correctionCustomReflexos.corrected, total: round(correctionCustomReflexos.corrected + interestCustomReflexos) });
+    }
+    if (art467Value > 0) verbasDetalhadas.push({ name: "Multa Art. 467 CLT", legalRef: "CLT art. 467", bruto: art467Value, juros: 0, corrigido: art467Value, total: art467Value });
+    if (intervalIntrajornadaValue > 0) verbasDetalhadas.push({ name: "Intervalo Intrajornada (Art. 71 §4)", legalRef: "CLT art. 71, §4º", bruto: intervalIntrajornadaValue, juros: 0, corrigido: intervalIntrajornadaValue, total: intervalIntrajornadaValue });
+    if (transferAdditionalValue > 0) verbasDetalhadas.push({ name: "Adicional de Transferência (Art. 469 §3)", legalRef: "CLT art. 469, §3º", bruto: transferAdditionalValue, juros: 0, corrigido: transferAdditionalValue, total: transferAdditionalValue });
+    if (dsrValue > 0) verbasDetalhadas.push({ name: "DSR sobre Horas Extras (Súm. 172)", legalRef: "TST Súmula 172", bruto: dsrValue, juros: 0, corrigido: dsrValue, total: dsrValue });
+    if (stabilityValue > 0) verbasDetalhadas.push({ name: "Estabilidade Indenizada", legalRef: "TST Súmula 396", bruto: stabilityValue, juros: 0, corrigido: stabilityValue, total: stabilityValue });
+    if (deductionsValue > 0) verbasDetalhadas.push({ name: "Abatimentos (FGTS depositado / verbas pagas)", legalRef: "CLT art. 477, §5º", bruto: -deductionsValue, juros: 0, corrigido: -deductionsValue, total: -deductionsValue });
+
+    return {
+      // meta / intermediate (added for the explainer — not in the TS return, but derived here)
+      _meta: {
+        worked: worked, avisoPrevioDays: avisoPrevioDays, avos13th: avos13th, avosVacation: avosVacation,
+        hourlyRate: hourlyRate, vacationBase: vacationBase, termInterestRate: termInterestRate,
+        termCorrectionFactor: correctionVacation.correctionFactor || correction13th.correctionFactor || 1,
+        endMonthKey: endMonthKey, liquidKey: liquidKey, minimumWage: minimumWage, fgtsRate: fgtsRate,
+        inssEmployeeEntries: inssEmployeeResult.entries, irpf: irpfResult,
+        proportionalVacation: vacationValueProportional, doubleVacation: doubleVacationValue,
+        salaryMonthsCount: salaryHist.length
+      },
+      priorNoticeValue: priorNoticeValue, thirteenthSalaryValue: thirteenthSalaryValue, vacationValue: vacationValue,
+      fgtsValue: fgtsValue, fgtsFineValue: fgtsFineValue, unemploymentInsuranceValue: unemploymentInsuranceValue,
+      extraHoursValue: extraHoursValue, nightAdditionalValue: nightAdditionalValue, insalubrityValue: insalubrityValue,
+      dangerousWorkValue: dangerousWorkValue, art477FineValue: art477FineValue, reflexo13thValue: reflexo13thValue,
+      reflexoVacationValue: reflexoVacationValue, reflexoFGTSValue: reflexoFGTSValue, reflexoMultaFGTSValue: reflexoMultaFGTSValue,
+      doubleVacationValue: doubleVacationValue, totalValue: totalValue, saldoSalarioValue: saldoSalarioValue,
+      salaryDifferenceValue: salaryDifferenceValue, salaryDifferenceReflexosValue: salaryDifferenceReflexosValue,
+      salaryDifferenceDetail: diffDetail, customVerbasDetail: customVerbasResult ? customVerbasResult.details : [],
+      outrasVerbasValue: outrasVerbasValue, customVerbasReflexosValue: customVerbasReflexosValue, art467Value: art467Value,
+      intervalIntrajornadaValue: intervalIntrajornadaValue, transferAdditionalValue: transferAdditionalValue,
+      dsrValue: dsrValue, stabilityValue: stabilityValue, deductionsValue: deductionsValue,
+      prescricao: applyPrescricaoQuinquenal ? { applied: true, cutoffMonth: cutoffKey || "", monthsCut: prescricaoMonthsCut } : undefined,
+      correction: {
+        priorNotice: correctionPriorNotice, thirteenthSalary: correction13th, vacation: correctionVacation, art477Fine: correctionArt477,
+        saldoSalario: correctionSaldo, salaryMonths: salaryMonthEntries, salaryDifference: correctionSalaryDiff, art467: correctionArt467,
+        fgts: { original: round(fgtsResult.totalDeposit), correctionFactor: fgtsResult.totalCorrected / (fgtsResult.totalDeposit || 1), corrected: round(fgtsResult.totalCorrected), correctionAmount: round(fgtsResult.totalCorrected - fgtsResult.totalDeposit) },
+        fgtsFine: { original: fgtsFineValue, correctionFactor: fgtsFineCorrected / (fgtsFineValue || 1), corrected: fgtsFineCorrected, correctionAmount: round(fgtsFineCorrected - fgtsFineValue) }
+      },
+      interest: {
+        priorNotice: interestPriorNotice, thirteenthSalary: interest13th, vacation: interestVacation, art477Fine: interestArt477,
+        saldoSalario: interestSaldo, salaryMonths: salaryMonthInterest, fgts: interestFgts, fgtsFine: interestFgtsFine,
+        salaryDifference: interestSalaryDifference, customVerbas: interestCustomVerbas, total: totalInterest
+      },
+      fgtsDetail: fgtsResult,
+      inssEmployee: inssEmployeeValue, inssEmployer: round(inssEmployerResult.totalEmployer), satRat: round(inssEmployerResult.totalSat),
+      irpf: irpfResult.taxDue, custasJudiciais: custasResult.total, honorariosSucumbencia: honorariosResult.honorarios,
+      honorariosIrpf: honorariosResult.irpf, honorariosLiquidos: honorariosResult.liquido,
+      brutoDevidoReclamante: brutoDevidoReclamante, totalDescontos: totalDescontos, liquidoDevidoReclamante: liquidoDevidoReclamante,
+      totalDevidoReclamado: totalDevidoReclamado, percentualRemuneratorio: percentualRemuneratorio, verbasDetalhadas: verbasDetalhadas
+    };
+  }
+
+  var defaultIndexTable = createIndexTable(DEFAULT_IPCA_E_DATA);
+
+  var API = {
+    calculateLaborV3: calculateLaborV3,
+    defaultIndexTable: defaultIndexTable,
+    DEFAULT_IPCA_E_DATA: DEFAULT_IPCA_E_DATA,
+    round: round,
+    INSS_BRACKETS_2025: INSS_BRACKETS_2025,
+    IRPF_BRACKETS_2025: IRPF_BRACKETS_2025,
+    INSS_TETO_2025: INSS_TETO_2025
+  };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  global.LexLaboral = API;
+})(typeof window !== "undefined" ? window : this);
+
+</script>
+<script>
+(function () {
+  "use strict";
+  var E = window.LexLaboral;
+
+  // ─── formatters ────────────────────────────────────────────────────────
+  function n2(v) { return (v || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function money(v) { v = v || 0; return (v < 0 ? "− " : "") + "R$ " + Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function f6(v) { return (v || 0).toLocaleString("pt-BR", { minimumFractionDigits: 6, maximumFractionDigits: 6 }); }
+  function pct(v) { return (v * 100).toLocaleString("pt-BR", { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + "%"; }
+  function mesRef(key) { var p = key.split("-"); return p[1] + "/" + p[0]; }
+  function dmy(d) { if (!d) return "—"; var p = d.toISOString().slice(0, 10).split("-"); return p[2] + "/" + p[1] + "/" + p[0]; }
+  function op(x) { return '<span class="op">' + x + "</span>"; }
+  function res(x) { return '<span class="res">' + x + "</span>"; }
+  function nextMonthKey(key) { var p = key.split("-").map(Number); return p[1] === 12 ? (p[0] + 1) + "-01" : p[0] + "-" + String(p[1] + 1).padStart(2, "0"); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  var $ = function (id) { return document.getElementById(id); };
+  function num(id) { var v = parseFloat($(id).value); return isNaN(v) ? 0 : v; }
+  function ival(id) { var v = parseInt($(id).value, 10); return isNaN(v) ? 0 : v; }
+  function chk(id) { return $(id).checked; }
+  function val(id) { return $(id).value; }
+  function dateOf(id) { var v = val(id); return v ? new Date(v) : null; }
+
+  // ─── dynamic rows ──────────────────────────────────────────────────────
+  function readSaldoRows() {
+    return Array.prototype.map.call(document.querySelectorAll("#saldoRows .rowcard"), function (r) {
+      return { month: r.querySelector(".m").value || "", daysWorked: parseInt(r.querySelector(".d").value, 10) || 0 };
+    }).filter(function (e) { return e.month && e.daysWorked > 0; });
+  }
+  function readSalDiffRows() {
+    return Array.prototype.map.call(document.querySelectorAll("#salDiffRows .rowcard"), function (r) {
+      var recv = r.querySelector(".rv").value;
+      var o = { startMonth: r.querySelector(".sm").value, endMonth: r.querySelector(".em").value, dueSalary: parseFloat(r.querySelector(".du").value) || 0 };
+      if (recv !== "") o.receivedSalary = parseFloat(recv) || 0;
+      return o;
+    }).filter(function (e) { return e.startMonth && e.endMonth && e.dueSalary > 0; });
+  }
+  function readCustomRows() {
+    return Array.prototype.map.call(document.querySelectorAll("#customRows .rowcard"), function (r) {
+      return { name: r.querySelector(".nm").value || "Verba", monthlyValue: parseFloat(r.querySelector(".mv").value) || 0, startMonth: r.querySelector(".sm").value, endMonth: r.querySelector(".em").value, nature: r.querySelector(".nat").value };
+    }).filter(function (e) { return e.monthlyValue > 0 && e.startMonth && e.endMonth; });
+  }
+
+  function addSaldoRow(month, days) {
+    var d = document.createElement("div"); d.className = "rowcard";
+    d.innerHTML = '<button type="button" class="rm" aria-label="Remover">×</button>' +
+      '<div class="grid2"><div class="fld"><label>Competência</label><input type="month" class="m" value="' + (month || "") + '"></div>' +
+      '<div class="fld"><label>Dias trab.</label><input type="number" class="d" min="0" max="31" step="1" value="' + (days || "") + '"></div></div>';
+    $("saldoRows").appendChild(d);
+    d.querySelector(".rm").addEventListener("click", function () { d.remove(); recompute(); });
+  }
+  function addSalDiffRow(p) {
+    p = p || {};
+    var d = document.createElement("div"); d.className = "rowcard";
+    d.innerHTML = '<button type="button" class="rm" aria-label="Remover">×</button>' +
+      '<div class="grid2"><div class="fld"><label>Início</label><input type="month" class="sm" value="' + (p.sm || "") + '"></div>' +
+      '<div class="fld"><label>Fim</label><input type="month" class="em" value="' + (p.em || "") + '"></div></div>' +
+      '<div class="grid2"><div class="fld"><label>Salário devido</label><input type="number" class="du" min="0" step="0.01" value="' + (p.du || "") + '"></div>' +
+      '<div class="fld"><label>Recebido <span class="hint">(opc.)</span></label><input type="number" class="rv" min="0" step="0.01" value="' + (p.rv != null ? p.rv : "") + '"></div></div>';
+    $("salDiffRows").appendChild(d);
+    d.querySelector(".rm").addEventListener("click", function () { d.remove(); recompute(); });
+  }
+  function addCustomRow(p) {
+    p = p || {};
+    var d = document.createElement("div"); d.className = "rowcard";
+    d.innerHTML = '<button type="button" class="rm" aria-label="Remover">×</button>' +
+      '<div class="fld"><label>Nome da verba</label><input type="text" class="nm" value="' + esc(p.nm || "") + '" placeholder="Ex.: comissões"></div>' +
+      '<div class="grid2"><div class="fld"><label>Valor/mês</label><input type="number" class="mv" min="0" step="0.01" value="' + (p.mv || "") + '"></div>' +
+      '<div class="fld"><label>Natureza</label><select class="nat"><option value="salarial">Salarial</option><option value="indenizatoria">Indenizatória</option></select></div></div>' +
+      '<div class="grid2"><div class="fld"><label>Início</label><input type="month" class="sm" value="' + (p.sm || "") + '"></div>' +
+      '<div class="fld"><label>Fim</label><input type="month" class="em" value="' + (p.em || "") + '"></div></div>';
+    $("customRows").appendChild(d);
+    d.querySelector(".rm").addEventListener("click", function () { d.remove(); recompute(); });
+  }
+
+  // ─── build input ───────────────────────────────────────────────────────
+  function readForm() {
+    var input = {
+      clientName: val("clientName"),
+      startDate: dateOf("startDate"), endDate: dateOf("endDate"),
+      lastSalary: num("lastSalary"), baseSalary: num("baseSalary"), lastThreeSalariesAvg: num("lastThreeSalariesAvg"),
+      unpaid13ths: 0, vacationCount: 0, vacationVencidasCount: ival("vacationVencidasCount"),
+      priorNoticeWorked: chk("priorNoticeWorked"),
+      extraHours: num("extraHours"), nightHours: num("nightHours"), nightAdditionalPercent: num("nightAdditionalPercent"),
+      insalubrityLevel: ival("insalubrityLevel"), dangerousWork: chk("dangerousWork"), applyDsrOnExtra: chk("applyDsrOnExtra"),
+      intervalIntrajornadaHours: num("intervalIntrajornadaHours"), transferAdditionalMonths: ival("transferAdditionalMonths"),
+      stabilityMonths: ival("stabilityMonths"),
+      fgtsAlreadyDeposited: num("fgtsAlreadyDeposited"), amountsAlreadyPaid: num("amountsAlreadyPaid"),
+      terminationType: val("terminationType"),
+      applyArt477Fine: chk("applyArt477Fine"), applyArt467: chk("applyArt467"), applyPrescricaoQuinquenal: chk("applyPrescricaoQuinquenal"),
+      irpfDependents: ival("irpfDependents"),
+      honorariosRate: num("honorariosRate") / 100, employerInssRate: num("employerInssRate") / 100, satRate: num("satRate") / 100,
+      liquidationDate: dateOf("liquidationDate"), filingDate: dateOf("filingDate") || undefined,
+      unpaidSalaries: readSaldoRows(),
+      customVerbas: readCustomRows()
+    };
+    if (chk("salDiffOn")) {
+      var periods = readSalDiffRows();
+      if (periods.length) input.salaryDifference = { type: val("salDiffType"), applyReflexos: chk("salDiffReflexos"), periods: periods };
+    }
+    var ENV = { MINIMUM_WAGE: num("minimumWage"), FGTS_RATE: num("fgtsRate") / 100 };
+    return { input: input, ENV: ENV };
+  }
+
+  // ─── card renderer ─────────────────────────────────────────────────────
+  function stepHTML(s) {
+    return '<li><div class="step-t">' + s.t + (s.ref ? ' <span class="ref">— ' + s.ref + "</span>" : "") + "</div>" +
+      (s.expr ? '<div class="expr">' + s.expr + "</div>" : "") +
+      (s.note ? '<p class="step-note">' + s.note + "</p>" : "") + "</li>";
+  }
+  function cardHTML(c) {
+    var steps = c.steps.map(stepHTML).join("");
+    var nominal = c.nominal != null ? '<span class="v-total nominal"><span class="lbl">' + (c.nominalLbl || "Bruto") + '</span><span class="val tnum">' + money(c.nominal) + "</span></span>" : "";
+    var result = c.resultLabel ? '<div class="v-result"><span class="rl">' + c.resultLabel + '</span><span class="rv tnum">' + money(c.total) + "</span></div>" : "";
+    return '<details class="verba"' + (c.open ? " open" : "") + '><summary>' +
+      '<svg class="v-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg>' +
+      '<span class="v-name">' + c.name + (c.law ? '<span class="v-law">' + c.law + "</span>" : "") + "</span>" +
+      nominal +
+      '<span class="v-total"><span class="lbl">' + (c.totalLbl || "Total c/ juros") + '</span><span class="val tnum">' + money(c.total) + "</span></span>" +
+      '</summary><div class="v-body"><ol class="steps">' + steps + "</ol>" + result + (c.extra || "") + "</div></details>";
+  }
+
+  var CODEFN = function (fn, file) { return fn + " · " + file; };
+
+  // ─── main render ───────────────────────────────────────────────────────
+  function render(input, r) {
+    var m = r._meta, C = r.correction, J = r.interest;
+    var factorTerm = (C.vacation.correctionFactor && r.vacationValue > 0) ? C.vacation.correctionFactor : (C.thirteenthSalary.correctionFactor || 1);
+    var rate = m.termInterestRate;
+    var dueTerm = mesRef(nextMonthKey(m.endMonthKey)), liq = mesRef(m.liquidKey);
+    var corrLine = function (bruto, corrected, factor) {
+      return "corrigido " + op("=") + " " + n2(bruto) + " × " + f6(factor) + " " + op("=") + " " + res(money(corrected));
+    };
+    var jurosLine = function (corrected, juros) {
+      return "juros " + op("=") + " " + n2(corrected) + " × " + pct(rate) + " " + op("=") + " " + res(money(juros));
+    };
+
+    // KPIs
+    $("kpis").innerHTML =
+      '<div class="kpi hero-kpi"><div class="k-lbl">Total devido pelo reclamado</div><div class="k-val">' + money(r.totalDevidoReclamado) + '</div><div class="k-sub">líquido + encargos + honorários + custas</div></div>' +
+      '<div class="kpi"><div class="k-lbl">Líquido do reclamante</div><div class="k-val pos">' + money(r.liquidoDevidoReclamante) + '</div><div class="k-sub">após INSS e IRPF</div></div>' +
+      '<div class="kpi"><div class="k-lbl">Bruto do reclamante</div><div class="k-val accent">' + money(r.brutoDevidoReclamante) + '</div><div class="k-sub">corrigido + juros de mora</div></div>';
+
+    // Case card
+    var tt = { sem_justa_causa: "Sem justa causa", rescisao_indireta: "Rescisão indireta", pedido_demissao: "Pedido de demissão", com_justa_causa: "Justa causa" }[input.terminationType];
+    $("caseCard").innerHTML =
+      '<div class="ch"><strong>Reclamante:</strong> ' + esc(input.clientName || "—") + ' <span class="tag">' + tt + "</span></div>" +
+      '<dl class="facts">' +
+      fact("Admissão", dmy(input.startDate)) + fact("Demissão", dmy(input.endDate)) +
+      fact("Último salário", money(input.lastSalary)) + fact("Tempo de casa", m.worked.years + " a " + m.worked.months + " m " + m.worked.days + " d") +
+      fact("Aviso prévio", input.priorNoticeWorked ? "Trabalhado" : (r.priorNoticeValue > 0 ? m.avisoPrevioDays + " dias (indenizado)" : "—")) +
+      fact("Férias vencidas", input.vacationVencidasCount + " período(s)") +
+      fact("Liquidação", mesRef(m.liquidKey)) +
+      fact("Prescrição", input.applyPrescricaoQuinquenal ? "Quinquenal (aplicada)" : "Não aplicada") +
+      "</dl>";
+
+    // ── Verba cards ──
+    var cards = [];
+    if (r.priorNoticeValue > 0) cards.push({
+      open: true, name: "Aviso prévio indenizado", law: "Lei 12.506/2011 · CLT art. 487", nominal: r.priorNoticeValue, total: r.verbasDetalhadas.find(byName("Aviso Prévio")).total,
+      resultLabel: "Total do aviso prévio (corrigido + juros)",
+      steps: [
+        { t: "Dias de aviso proporcionais ao tempo de casa", ref: CODEFN("calculateAvisoPrevioDays", "date-utils.ts"), expr: "dias " + op("=") + " min(30 " + op("+") + " 3 × " + m.worked.years + " anos, 90) " + op("=") + " " + res(m.avisoPrevioDays + " dias"), note: "Lei 12.506/2011: 30 dias + 3 por ano trabalhado, teto de 90." },
+        { t: "Valor nominal", ref: CODEFN("calculateLaborV3", "labor-calculation-v3.ts"), expr: "(salário " + op("÷") + " 30) × dias " + op("=") + " (" + n2(input.lastSalary) + " " + op("÷") + " 30) × " + m.avisoPrevioDays + " " + op("=") + " " + res(money(r.priorNoticeValue)) },
+        { t: "Correção monetária — IPCA-E", ref: CODEFN("correctValue", "monetary-correction.ts"), expr: "fator " + op("=") + " IPCA-E[" + liq + "] " + op("÷") + " IPCA-E[" + dueTerm + "] " + op("=") + " " + f6(C.priorNotice.correctionFactor) + "<br>" + corrLine(r.priorNoticeValue, C.priorNotice.corrected, C.priorNotice.correctionFactor), note: "Correção corre do mês seguinte ao vencimento (Súmula 381 TST)." },
+        { t: "Juros de mora — ADC 58", ref: CODEFN("calculateAdc58InterestRate", "index-table.ts"), expr: jurosLine(C.priorNotice.corrected, J.priorNotice), note: "TRD simples até 12/2024 + SELIC acumulada de 01/2025 até a liquidação (ver seção 03)." }
+      ]
+    });
+
+    if (r.thirteenthSalaryValue > 0) cards.push({
+      name: "13º salário proporcional", law: "CLT art. 130 · Súmula 1 TST", nominal: r.thirteenthSalaryValue, total: r.verbasDetalhadas.find(byName("13º Salário")).total,
+      resultLabel: "Total do 13º (corrigido + juros)",
+      steps: [
+        { t: "Avos do ano da rescisão (regra dos 15 dias)", ref: CODEFN("count13thAvos", "date-utils.ts"), expr: "avos " + op("=") + " " + res(m.avos13th + "/12"), note: "Só os meses do ano-calendário da rescisão contam; mês com 15+ dias vira 1 avo." },
+        { t: "Valor nominal", ref: CODEFN("calculateLaborV3", "labor-calculation-v3.ts"), expr: "(salário " + op("÷") + " 12) × avos " + op("=") + " (" + n2(input.lastSalary) + " " + op("÷") + " 12) × " + m.avos13th + " " + op("=") + " " + res(money(r.thirteenthSalaryValue)) },
+        { t: "Correção IPCA-E & juros ADC 58", expr: corrLine(r.thirteenthSalaryValue, C.thirteenthSalary.corrected, C.thirteenthSalary.correctionFactor) + "<br>" + jurosLine(C.thirteenthSalary.corrected, J.thirteenthSalary) }
+      ]
+    });
+
+    if (r.vacationValue > 0) cards.push({
+      name: "Férias + 1/3 (proporcionais + vencidas)", law: "CF art. 7º, XVII · CLT arts. 130 e 137", nominal: r.vacationValue, total: r.verbasDetalhadas.find(byName("Férias + 1/3")).total,
+      resultLabel: "Total de férias + 1/3 (corrigido + juros)",
+      steps: [
+        { t: "Base de férias (salário + 1/3 constitucional)", ref: CODEFN("calculateLaborV3", "labor-calculation-v3.ts"), expr: "base " + op("=") + " " + n2(input.lastSalary) + " " + op("+") + " (" + n2(input.lastSalary) + " " + op("÷") + " 3) " + op("=") + " " + res(money(m.vacationBase)) },
+        { t: "Proporcionais + períodos vencidos", ref: CODEFN("countVacationAvos", "date-utils.ts"), expr: "proporcionais (" + m.avosVacation + "/12) " + op("=") + " " + res(money(m.proportionalVacation)) + "<br>vencidas (" + input.vacationVencidasCount + " × base) " + op("=") + " " + res(money(m.doubleVacation)) + "<br>bruto " + op("=") + " " + res(money(r.vacationValue)), note: "Férias vencidas: período aquisitivo completo não gozado, pago em dobro (CLT art. 137)." },
+        { t: "Correção IPCA-E & juros ADC 58", expr: corrLine(r.vacationValue, C.vacation.corrected, C.vacation.correctionFactor) + "<br>" + jurosLine(C.vacation.corrected, J.vacation) }
+      ]
+    });
+
+    if (r.saldoSalarioValue > 0) cards.push({
+      name: "Saldo de salário", law: "CLT art. 462", nominal: r.saldoSalarioValue, total: r.verbasDetalhadas.find(byName("Saldo de Salário")).total,
+      resultLabel: "Total do saldo (corrigido + juros)",
+      steps: [
+        { t: "Dias trabalhados no mês × salário diário", ref: CODEFN("calculateLaborV3", "labor-calculation-v3.ts"), expr: "diária " + op("=") + " salário " + op("÷") + " 30 " + op("=") + " " + res(money(input.lastSalary / 30)) + " × dias em aberto " + op("=") + " " + res(money(r.saldoSalarioValue)) },
+        { t: "Correção & juros ADC 58", expr: corrLine(r.saldoSalarioValue, C.saldoSalario.corrected, C.saldoSalario.correctionFactor) + "<br>" + jurosLine(C.saldoSalario.corrected, J.saldoSalario) }
+      ]
+    });
+
+    // FGTS with month table
+    if (r.fgtsValue > 0) {
+      var fd = r.fgtsDetail;
+      var rows = fd.monthlyEntries.map(function (e) {
+        return "<tr><td>" + mesRef(e.month) + '</td><td class="tnum">' + n2(e.base) + '</td><td class="tnum">' + n2(e.deposit) + '</td><td class="tnum">' + n2(e.correctionAmount) + '</td><td class="tnum">' + n2(e.interest) + '</td><td class="tnum">' + n2(e.total) + "</td></tr>";
+      }).join("");
+      var fTable = '<details class="month-toggle"><summary>▸ Mostrar as ' + fd.monthlyEntries.length + " competências mês a mês</summary><div class=\"table-wrap\"><table class=\"data\"><thead><tr><th>Competência</th><th>Base</th><th>Depósito 8%</th><th>Correção</th><th>Juros</th><th>Total</th></tr></thead><tbody>" + rows +
+        '</tbody><tfoot><tr><td>Totais</td><td class="tnum">—</td><td class="tnum">' + n2(fd.totalDeposit) + '</td><td class="tnum">' + n2(fd.totalCorrected - fd.totalDeposit) + '</td><td class="tnum">' + n2(fd.totalInterest) + '</td><td class="tnum">' + n2(fd.totalFgts) + "</td></tr></tfoot></table></div></details>";
+      cards.push({
+        name: "FGTS 8% (depósitos do contrato)", law: "Lei 8.036/1990, art. 15", nominal: r.fgtsValue, total: r.fgtsValue,
+        resultLabel: "Total do FGTS (corrigido + juros)", extra: fTable,
+        steps: [
+          { t: "Depósito de cada competência", ref: CODEFN("calculateFgtsMonthly", "fgts-calculator.ts"), expr: "depósito " + op("=") + " salário × " + pct(input.__fgtsRate || (E.round(fd.monthlyEntries[0] ? fd.monthlyEntries[0].aliquot : 0.08))) + " " + op("=") + " " + res(money(fd.monthlyEntries[0] ? fd.monthlyEntries[0].deposit : 0)), note: fd.monthlyEntries.length + " competências + FGTS sobre 13º e aviso prévio." },
+          { t: "Soma dos depósitos", ref: "totalDeposit", expr: "Σ depósitos " + op("=") + " " + res(money(fd.totalDeposit)) },
+          { t: "Correção e juros — mês a mês", expr: "Σ corrigido " + op("=") + " " + res(money(fd.totalCorrected)) + op(" · ") + "Σ juros " + op("=") + " " + res(money(fd.totalInterest)), note: "Cada competência é corrigida e capitalizada pela sua própria data — veja a tabela." }
+        ]
+      });
+    }
+
+    if (r.fgtsFineValue > 0) cards.push({
+      name: "Multa de 40% do FGTS", law: "Lei 8.036/1990, art. 18, §1º", nominal: r.fgtsFineValue, total: r.verbasDetalhadas.find(byName("Multa FGTS 40%")).total,
+      resultLabel: "Total da multa de 40% (corrigido + juros)",
+      steps: [
+        { t: "Base = saldo de FGTS corrigido (sem juros)", ref: CODEFN("fineBase", "fgts-calculator.ts"), expr: "base " + op("=") + " " + res(money(r.fgtsDetail.fineBase)), note: "Incide sobre o principal corrigido; juros ADC 58 são acessório à parte (CLT art. 477-B)." },
+        { t: "Multa de 40%", ref: "fineValue", expr: n2(r.fgtsDetail.fineBase) + " × 40% " + op("=") + " " + res(money(r.fgtsFineValue)) },
+        { t: "Correção & juros ADC 58", expr: "corrigido " + op("=") + " " + res(money(C.fgtsFine.corrected)) + op(" · ") + "juros " + op("=") + " " + res(money(J.fgtsFine)) }
+      ]
+    });
+
+    if (r.art477FineValue > 0) cards.push({
+      name: "Multa do art. 477 (atraso na quitação)", law: "CLT art. 477, §8º", nominal: r.art477FineValue, total: r.verbasDetalhadas.find(byName("Multa Art. 477 CLT")).total,
+      resultLabel: "Total da multa do art. 477 (corrigido + juros)",
+      steps: [
+        { t: "Valor = 1 salário do empregado", ref: CODEFN("calculateLaborV3", "labor-calculation-v3.ts"), expr: "multa " + op("=") + " salário " + op("=") + " " + res(money(r.art477FineValue)), note: "Devida quando a rescisão não é paga no prazo do art. 477, §6º." },
+        { t: "Correção & juros ADC 58", expr: corrLine(r.art477FineValue, C.art477Fine.corrected, C.art477Fine.correctionFactor) + "<br>" + jurosLine(C.art477Fine.corrected, J.art477Fine) }
+      ]
+    });
+
+    if (r.art467Value > 0) cards.push({
+      name: "Multa do art. 467 (verbas incontroversas)", law: "CLT art. 467", nominal: r.art467Value, nominalLbl: "Valor", total: r.art467Value, totalLbl: "Total",
+      resultLabel: "Total da multa do art. 467",
+      steps: [
+        { t: "Base = verbas rescisórias incontroversas já corrigidas", ref: CODEFN("calculateLaborV3", "labor-calculation-v3.ts"), expr: "base " + op("=") + " férias<sub>corr</sub> " + op("+") + " 13º<sub>corr</sub> " + op("+") + " aviso<sub>corr</sub> " + op("+") + " multa40%<sub>corr</sub><br>" + op("=") + " " + n2(C.vacation.corrected) + " " + op("+") + " " + n2(C.thirteenthSalary.corrected) + " " + op("+") + " " + n2(C.priorNotice.corrected) + " " + op("+") + " " + n2(C.fgtsFine.corrected) + " " + op("=") + " " + res(money(C.vacation.corrected + C.thirteenthSalary.corrected + C.priorNotice.corrected + C.fgtsFine.corrected)) },
+        { t: "Multa de 50%", ref: "applyArt467", expr: n2(C.vacation.corrected + C.thirteenthSalary.corrected + C.priorNotice.corrected + C.fgtsFine.corrected) + " × 50% " + op("=") + " " + res(money(r.art467Value)), note: "Natureza indenizatória (punitiva): sem INSS/IRPF e sem juros próprios — já nasce sobre valores atualizados." }
+      ]
+    });
+
+    // Diferenças salariais
+    if (r.salaryDifferenceValue > 0 && r.salaryDifferenceDetail) {
+      var sd = r.salaryDifferenceDetail;
+      var sdRows = sd.monthlyEntries.map(function (e) {
+        return "<tr><td>" + mesRef(e.month) + '</td><td class="tnum">' + n2(e.due) + '</td><td class="tnum">' + n2(e.received) + '</td><td class="tnum">' + n2(e.diff) + '</td><td class="tnum">' + n2(e.corrected) + '</td><td class="tnum">' + n2(e.interest) + "</td></tr>";
+      }).join("");
+      var sdTable = '<details class="month-toggle"><summary>▸ Mostrar diferenças mês a mês (' + sd.monthlyEntries.length + ")</summary><div class=\"table-wrap\"><table class=\"data\"><thead><tr><th>Competência</th><th>Devido</th><th>Recebido</th><th>Diferença</th><th>Corrigido</th><th>Juros</th></tr></thead><tbody>" + sdRows + "</tbody></table></div></details>";
+      var reflexTotal = r.verbasDetalhadas.find(byName("Reflexos das Diferenças Salariais"));
+      var sdSteps = [
+        { t: "Diferença mensal = salário devido − recebido", ref: CODEFN("calculateSalaryDifference", "salary-difference-calculator.ts"), expr: "Σ diferenças " + op("=") + " " + res(money(sd.totalDiff)) + " em " + sd.monthlyEntries.length + " competências" },
+        { t: "Correção IPCA-E & juros — mês a mês", expr: "Σ corrigido " + op("=") + " " + res(money(sd.totalCorrected)) + op(" · ") + "Σ juros " + op("=") + " " + res(money(sd.totalInterest)) }
+      ];
+      if (r.salaryDifferenceReflexosValue > 0) sdSteps.push({ t: "Reflexos (Súmula 226 TST)", expr: "13º " + res(money(sd.reflexo13)) + op(" · ") + "férias " + res(money(sd.reflexoVacation)) + op(" · ") + "aviso " + res(money(sd.reflexoAviso)) + "<br>Σ reflexos " + op("=") + " " + res(money(r.salaryDifferenceReflexosValue)) });
+      cards.push({
+        name: "Diferenças salariais" + (input.salaryDifference.type === "desvio_funcao" ? " (desvio de função)" : " (equiparação — art. 461)"), law: "CLT art. 461 · Súmula 6 TST",
+        nominal: r.salaryDifferenceValue, total: r.verbasDetalhadas.find(function (v) { return v.name.indexOf("Diferenças Salariais") === 0; }).total,
+        resultLabel: "Total das diferenças" + (r.salaryDifferenceReflexosValue > 0 ? " (reflexos: " + money(reflexTotal ? reflexTotal.total : 0) + ")" : ""),
+        extra: sdTable, steps: sdSteps
+      });
+    }
+
+    // Outras verbas
+    (r.customVerbasDetail || []).forEach(function (d) {
+      cards.push({
+        name: "Outras verbas — " + esc(d.name), law: d.nature === "salarial" ? "Natureza salarial (INSS/IRPF/FGTS)" : "Natureza indenizatória", nominal: d.bruto, total: d.total,
+        resultLabel: "Total (corrigido + juros)",
+        steps: [
+          { t: "Valor mensal × competências", ref: CODEFN("calculateCustomVerbas", "custom-verbas-calculator.ts"), expr: "Σ valores " + op("=") + " " + res(money(d.bruto)) },
+          { t: "Correção IPCA-E & juros — mês a mês", expr: "corrigido " + op("=") + " " + res(money(d.corrigido)) + op(" · ") + "juros " + op("=") + " " + res(money(d.juros)) }
+        ]
+      });
+    });
+
+    // Additionals (nominal, sem correção/juros próprios)
+    var adds = [
+      ["extraHoursValue", "Horas extras (50%)", "CLT art. 59", "horas × (salário " + op("÷") + " 220) × 1,5"],
+      ["nightAdditionalValue", "Adicional noturno", "CLT art. 73", "horas × (salário " + op("÷") + " 220) × " + (1 + input.nightAdditionalPercent / 100)],
+      ["insalubrityValue", "Insalubridade", "CLT art. 192", "salário-mín × " + input.insalubrityLevel + "% × meses"],
+      ["dangerousWorkValue", "Periculosidade", "CLT art. 193", "salário-base × 30% × meses"],
+      ["intervalIntrajornadaValue", "Intervalo intrajornada", "CLT art. 71, §4º", "horas/mês × hora × 1,5 × meses"],
+      ["transferAdditionalValue", "Adicional de transferência", "CLT art. 469, §3º", "salário-base × 25% × meses"],
+      ["dsrValue", "DSR sobre extras/noturno", "Súmula 172 TST", "(extras + noturno) × 0,1818"],
+      ["stabilityValue", "Estabilidade indenizada", "Súmulas 244/378 TST", "salários + 13º + férias+⅓ + FGTS do período"],
+      ["reflexo13thValue", "Reflexo de adicionais no 13º", "Súmula 226 TST", "média mensal × (avos " + op("÷") + " 12)"],
+      ["reflexoVacationValue", "Reflexo de adicionais nas férias", "Súmula 226 TST", "média mensal × (avos " + op("÷") + " 12) × ⁴⁄₃"],
+      ["reflexoFGTSValue", "Reflexo de adicionais no FGTS", "Súmula 63 TST", "(extras + noturno) × 8%"],
+      ["reflexoMultaFGTSValue", "Reflexo na multa de 40%", "Lei 8.036/90", "reflexo FGTS × 40%"]
+    ];
+    adds.forEach(function (a) {
+      var v = r[a[0]];
+      if (v > 0) cards.push({
+        name: a[1], law: a[2], nominal: v, nominalLbl: "Valor", total: v, totalLbl: "Total",
+        resultLabel: "Total (natureza nominal)",
+        steps: [{ t: "Cálculo", ref: CODEFN("calculateLaborV3", "labor-calculation-v3.ts"), expr: a[3] + " " + op("=") + " " + res(money(v)), note: "Verba de valor nominal (sem correção/juros próprios na composição do bruto)." }]
+      });
+    });
+
+    if (r.deductionsValue > 0) cards.push({
+      name: "Abatimentos", law: "FGTS já depositado / verbas já pagas", nominal: -r.deductionsValue, nominalLbl: "Valor", total: -r.deductionsValue, totalLbl: "Total",
+      resultLabel: "Abatimento do bruto",
+      steps: [{ t: "Dedução", ref: CODEFN("calculateLaborV3", "labor-calculation-v3.ts"), expr: "FGTS depositado " + op("+") + " verbas pagas " + op("=") + " " + res(money(r.deductionsValue)) }]
+    });
+
+    // Seguro-desemprego (fora do bruto)
+    if (r.unemploymentInsuranceValue > 0) cards.push({
+      name: "Seguro-desemprego (parcela)", law: "Lei 7.998/1990 · tabela MTE", nominal: r.unemploymentInsuranceValue, nominalLbl: "Guia", total: r.unemploymentInsuranceValue, totalLbl: "Por parcela",
+      extra: '<div class="callout info" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><p>Valor <strong>por parcela</strong>, pago pelo Governo Federal via guia — <strong>não integra o débito do empregador</strong>, por isso fica fora do quadro-resumo.</p></div>',
+      steps: [{ t: "Faixa progressiva sobre a média salarial", ref: CODEFN("calculateLaborV3", "labor-calculation-v3.ts"), expr: "média " + n2(input.lastThreeSalariesAvg) + " → " + res(money(r.unemploymentInsuranceValue)) }]
+    });
+
+    if (!cards.length) cards.push({ name: "Sem verbas apuradas", total: 0, steps: [{ t: "Ajuste os dados no painel", expr: "Nenhuma verba resultou em valor positivo para este cenário." }] });
+    $("verbasList").innerHTML = cards.map(cardHTML).join("");
+
+    // ── Correção & juros methodology ──
+    $("methodCJ").innerHTML =
+      '<div class="method"><h3>Correção monetária</h3><div class="h-law">IPCA-E · Súmula 381 TST · ' + CODEFN("getCorrectionFactor", "index-table.ts") + '</div>' +
+      "<p>Recompõe o poder de compra da verba. Roda a partir do <strong>mês seguinte</strong> ao vencimento, com o IPCA-E acumulado.</p>" +
+      '<div class="expr">fator ' + op("=") + " IPCA-E<sub>liquidação</sub> " + op("÷") + " IPCA-E<sub>venc.+1</sub><br>corrigido " + op("=") + " valor × fator</div>" +
+      "<p style=\"margin-top:11px\">Verbas rescisórias vencem em " + mesRef(m.endMonthKey) + "; correm de " + dueTerm + " a " + liq + " → fator <b>" + f6(factorTerm) + "</b>.</p></div>" +
+      '<div class="method"><h3>Juros de mora — ADC 58</h3><div class="h-law">STF ADC 58 · ' + CODEFN("calculateAdc58InterestRate", "index-table.ts") + '</div>' +
+      "<p>Sobre o valor já corrigido. Conforme a ADC 58: TRD simples mês a mês até 12/2024, depois SELIC acumulada a partir de 01/2025.</p>" +
+      '<div class="expr">taxa efetiva (venc. ' + mesRef(m.endMonthKey) + " → " + liq + ") " + op("=") + " " + res(pct(rate)) + "</div>" +
+      "<p style=\"margin-top:11px\">Taxa aplicada sobre o corrigido de cada verba rescisória. Ver detalhamento abaixo.</p></div>";
+
+    // ── INSS / IRPF ──
+    var inssRows = m.inssEmployeeEntries.map(function (e) {
+      return "<tr><td>" + (e.month.indexOf("-") > 0 ? mesRef(e.month) : e.month) + '</td><td class="tnum">' + n2(e.base) + '</td><td class="tnum">' + n2(e.limitedContribution) + "</td></tr>";
+    }).join("");
+    var irp = m.irpf;
+    $("methodTrib").innerHTML =
+      '<div class="method"><h3>INSS do empregado</h3><div class="h-law">Tabela progressiva 2025 · ' + CODEFN("calculateInssEmployee", "inss-calculator.ts") + '</div>' +
+      "<p>Alíquota progressiva por faixa, com teto de contribuição. Incide sobre bases salariais (13º, saldo, diferenças).</p>" +
+      (inssRows ? '<div class="table-wrap"><table class="data"><thead><tr><th>Base</th><th>Valor</th><th>INSS</th></tr></thead><tbody>' + inssRows + '</tbody><tfoot><tr><td>Total</td><td class="tnum">—</td><td class="tnum">' + n2(r.inssEmployee) + "</td></tr></tfoot></table></div>" : '<div class="expr">Sem base salarial tributável neste cenário → INSS ' + op("=") + " " + res(money(0)) + "</div>") +
+      "</div>" +
+      '<div class="method"><h3>IRPF sobre rendimentos acumulados</h3><div class="h-law">Art. 12-A, Lei 7.713/1988 · ' + CODEFN("calculateIrpfAcumulado", "irpf-calculator.ts") + '</div>' +
+      "<p>Base = remuneratório corrigido − INSS − dependentes, comparada à faixa de isenção.</p>" +
+      '<div class="expr">base ' + op("=") + " " + n2(irp.base) + "<br>alíquota " + op("=") + " " + pct(irp.applicableBracket.rate) + " " + op("−") + " dedução " + n2(irp.applicableBracket.deduction) + "<br>IRPF " + op("=") + " " + res(money(r.irpf)) + "</div>" +
+      (r.irpf === 0 ? '<p style="margin-top:11px">Base dentro da faixa de isenção → imposto zero.</p>' : "") +
+      "</div>";
+
+    // ── Encargos ──
+    $("encargosTable").innerHTML =
+      "<thead><tr><th>Encargo</th><th>Base &amp; alíquota</th><th>Valor</th></tr></thead><tbody>" +
+      encRow("INSS patronal", "bases salariais × " + pct(input.employerInssRate), r.inssEmployer) +
+      encRow("SAT / RAT", "bases salariais × " + pct(input.satRate), r.satRat) +
+      encRow("Honorários de sucumbência", "bruto do reclamante × " + pct(input.honorariosRate), r.honorariosSucumbencia) +
+      encRow("Custas judiciais", "total apurado × 2%", r.custasJudiciais) +
+      "</tbody>";
+
+    // ── Summary ──
+    var lines = r.verbasDetalhadas.slice();
+    adds.forEach(function (a) { if (r[a[0]] > 0) lines.push({ name: a[1], bruto: r[a[0]], corrigido: r[a[0]], juros: 0, total: r[a[0]] }); });
+    lines = lines.filter(function (l) { return l.total !== 0; });
+    var body = lines.map(function (l) {
+      return "<tr><td>" + esc(l.name) + '</td><td class="tnum">' + n2(l.bruto) + '</td><td class="tnum">' + n2(l.corrigido - l.bruto) + '</td><td class="tnum">' + n2(l.juros) + '</td><td class="tnum">' + n2(l.total) + "</td></tr>";
+    }).join("");
+    $("summaryTable").innerHTML =
+      "<thead><tr><th>Verba</th><th>Bruto</th><th>Correção</th><th>Juros</th><th>Total</th></tr></thead><tbody>" + body + "</tbody>" +
+      "<tfoot>" +
+      '<tr><td>Bruto devido ao reclamante</td><td class="tnum">—</td><td class="tnum">—</td><td class="tnum">—</td><td class="tnum">' + money(r.brutoDevidoReclamante) + "</td></tr>" +
+      '<tr><td>(−) INSS + IRPF do trabalhador</td><td></td><td></td><td></td><td class="tnum neg">' + money(-r.totalDescontos) + "</td></tr>" +
+      '<tr><td><b>Líquido do reclamante</b></td><td></td><td></td><td></td><td class="tnum pos">' + money(r.liquidoDevidoReclamante) + "</td></tr>" +
+      '<tr class="big"><td>Total devido pelo reclamado</td><td></td><td></td><td></td><td class="tnum">' + money(r.totalDevidoReclamado) + "</td></tr>" +
+      "</tfoot>";
+    $("summaryFoot").innerHTML = "Total do reclamado = líquido do reclamante + encargos patronais (" + money(r.inssEmployer + r.satRat) + ") + honorários (" + money(r.honorariosSucumbencia) + ") + custas (" + money(r.custasJudiciais) + ") + tributos recolhidos." + (r.unemploymentInsuranceValue > 0 ? " Seguro-desemprego (" + money(r.unemploymentInsuranceValue) + "/parcela) é pago pelo Governo e não entra aqui." : "");
+  }
+
+  function fact(k, v) { return '<div class="fact"><dt>' + k + "</dt><dd>" + v + "</dd></div>"; }
+  function encRow(k, b, v) { return "<tr><td>" + k + "</td><td>" + b + '</td><td class="tnum">' + money(v) + "</td></tr>"; }
+  function byName(n) { return function (v) { return v.name === n; }; }
+
+  // ─── recompute ─────────────────────────────────────────────────────────
+  var raf;
+  function recompute() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(function () {
+      try {
+        var f = readForm();
+        if (!f.input.startDate || !f.input.endDate) return;
+        var r = E.calculateLaborV3(f.input, E.defaultIndexTable, f.ENV);
+        f.input.__fgtsRate = f.ENV.FGTS_RATE;
+        render(f.input, r);
+      } catch (err) { console.error(err); }
+    });
+  }
+
+  // ─── wire up ───────────────────────────────────────────────────────────
+  document.addEventListener("DOMContentLoaded", function () {
+    $("calcForm").addEventListener("input", recompute);
+    $("calcForm").addEventListener("change", recompute);
+    $("salDiffOn").addEventListener("change", function () { $("salDiffWrap").style.display = this.checked ? "block" : "none"; });
+    $("addSaldo").addEventListener("click", function () { addSaldoRow(); recompute(); });
+    $("addSalDiff").addEventListener("click", function () { addSalDiffRow(); recompute(); });
+    $("addCustom").addEventListener("click", function () { addCustomRow(); recompute(); });
+    $("resetBtn").addEventListener("click", function () { location.reload(); });
+    $("printBtn").addEventListener("click", function () { window.print(); });
+    recompute();
+  });
+})();
+
+</script>
+
+</body>
+</html>

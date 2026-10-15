@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cálculo trabalhista e gestão de casos — LexLaboral</title>
+    <meta
+      name="description"
+      content="Software de cálculo trabalhista para advogados: verbas rescisórias, liquidação com correção monetária e juros, passivo trabalhista em lote, documentos em DOCX e gestão de casos, prazos e audiências. 7 dias grátis."
+    />
+    <meta name="robots" content="index, follow" />
+    <!-- Canonical e og:url da raiz. O prerender (scripts/prerender.mjs) troca as
+         duas tags em cada rota estática que gera — sem isso, toda página do site
+         se declararia como sendo a home. -->
+    <link rel="canonical" href="https://lexlaboral.com.br/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LexLaboral" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:url" content="https://lexlaboral.com.br/" />
+    <meta
+      property="og:title"
+      content="Cálculo trabalhista e gestão de casos — LexLaboral"
+    />
+    <meta
+      property="og:description"
+      content="Verbas, liquidação com correção e juros e passivo trabalhista, com a conta aberta verba a verba — e o caso, os prazos e os documentos no mesmo lugar."
+    />
+    <meta property="og:image" content="https://lexlaboral.com.br/logo.png" />
+    <meta property="og:image:alt" content="LexLaboral" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Cálculo trabalhista e gestão de casos — LexLaboral"
+    />
+    <meta
+      name="twitter:description"
+      content="Verbas, liquidação com correção e juros e passivo trabalhista, com a conta aberta verba a verba — e o caso, os prazos e os documentos no mesmo lugar."
+    />
+    <meta name="twitter:image" content="https://lexlaboral.com.br/logo.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "LexLaboral",
+        "url": "https://lexlaboral.com.br/",
+        "logo": "https://lexlaboral.com.br/logo.png",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "contato@lexlaboral.com.br",
+          "availableLanguage": ["pt-BR"]
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <!--
+      Static fallback content describing the app's purpose and its use of
+      Google user data, para crawler e revisor sem JavaScript.
+
+      Dentro de <noscript> porque antes ficava solto em #root: o navegador
+      pintava este texto e só depois o React o substituía, então todo carregamento
+      frio mostrava um flash da "versão de crawler" antes do app. Com noscript,
+      quem tem JavaScript nunca o vê e quem não tem continua recebendo tudo.
+
+      Não é a única cópia dessa informação: a landing renderizada tem a seção de
+      integração com o Google (`landing/components/google-integration-section.tsx`)
+      e /privacidade, /termos e /lgpd são HTML estático gerado por
+      scripts/prerender.mjs.
+    -->
+    <div id="root">
+      <noscript>
+      <main style="max-width: 720px; margin: 0 auto; padding: 48px 24px; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.6; color: #1a1a1a;">
+        <h1>LexLaboral</h1>
+        <p><strong>Plataforma de gestão para advogados trabalhistas.</strong></p>
+        <p>
+          O LexLaboral ajuda advogados trabalhistas a calcular verbas
+          rescisórias com correção monetária e juros, organizar casos, clientes
+          e documentos, gerar peças a partir de modelos e acompanhar prazos e
+          audiências dos seus processos.
+        </p>
+
+        <h2>O que o LexLaboral calcula</h2>
+        <ul>
+          <li>
+            Rescisão completa e verbas isoladas: aviso prévio, 13º, férias mais
+            um terço, FGTS e multa de 40%, horas extras e reflexos, adicional
+            noturno, insalubridade, periculosidade, equiparação salarial,
+            art. 467 e prescrição quinquenal.
+          </li>
+          <li>
+            Liquidação com correção monetária pelo IPCA-E e juros na forma da
+            ADC 58, até a data de liquidação escolhida.
+          </li>
+          <li>
+            INSS, IRRF e FGTS do período, separados do valor líquido.
+          </li>
+          <li>
+            Passivo trabalhista em lote, a partir da folha enviada em planilha.
+          </li>
+        </ul>
+        <p>
+          Cada cálculo guarda a tabela de índices que usou, e o demonstrativo
+          mostra a conta verba a verba com o fundamento legal correspondente.
+        </p>
+
+        <h2>Integração com o Google Calendar</h2>
+        <p>
+          De forma <strong>opcional</strong> e apenas com a sua autorização
+          expressa, o LexLaboral se conecta à sua conta Google para manter
+          audiências e prazos cadastrados nos seus casos sincronizados com o seu
+          Google Agenda (Google Calendar), nos dois sentidos.
+        </p>
+        <ul>
+          <li>
+            <strong>Dados que acessamos:</strong> criamos, lemos e atualizamos
+            eventos do seu Google Calendar referentes a audiências e prazos.
+          </li>
+          <li>
+            <strong>Como usamos:</strong> exclusivamente para a sincronização de
+            audiências e prazos que você solicita. Não usamos os dados do Google
+            para publicidade, não os vendemos e não os compartilhamos com
+            terceiros.
+          </li>
+          <li>
+            <strong>Controle:</strong> você pode revogar o acesso a qualquer
+            momento nas Configurações da plataforma ou em
+            <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.
+          </li>
+        </ul>
+        <p>
+          O uso e a transferência de informações recebidas das APIs do Google
+          obedecem à
+          <a href="https://developers.google.com/terms/api-services-user-data-policy">Política de Dados de Usuário dos Serviços de API do Google</a>,
+          incluindo os requisitos de Uso Limitado.
+        </p>
+
+        <p>
+          Saiba mais na nossa
+          <a href="/privacidade">Política de Privacidade</a> e nos
+          <a href="/termos">Termos de Uso</a>.
+        </p>
+
+        <p><a href="/authentication/sign-up">Começar grátis</a></p>
+      </main>
+      </noscript>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

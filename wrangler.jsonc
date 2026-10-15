@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jurispro-front",
+  "compatibility_date": "2025-05-01",
+  // Existe por um motivo só: o proxy reverso do PostHog em `/lxl/*`. Todo o
+  // resto continua sendo asset estático — `run_worker_first` lista apenas esse
+  // prefixo, então nenhuma requisição de página passa pelo script.
+  "main": "./worker/index.ts",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application",
+    // Sem o binding o Worker não tem como devolver o SPA; sem
+    // `run_worker_first` o `/lxl/*` cairia no `not_found_handling` e voltaria
+    // como index.html, nunca chegando ao script.
+    "binding": "ASSETS",
+    "run_worker_first": ["/lxl/*"],
+    // Serve /privacidade, /termos, /lgpd directly at 200 (from their
+    // prerendered index.html) instead of 307-redirecting to a trailing slash.
+    // Google's automated OAuth verification follows the privacy-policy link and
+    // treats a redirect as a failure, so the URL must resolve without one.
+    "html_handling": "drop-trailing-slash"
+  }
+}

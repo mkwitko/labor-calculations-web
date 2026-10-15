@@ -1,0 +1,4 @@
+Contact: mailto:security@lexlaboral.com.br
+Expires: 2027-05-11T23:59:59.000Z
+Preferred-Languages: pt-BR, en
+Canonical: https://lexlaboral.com.br/.well-known/security.txt
