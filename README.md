@@ -14,6 +14,28 @@ Web client for a Brazilian labor-law case management and settlement calculator: 
 - In-app messaging over a server-sent-events stream (`src/components/messaging`).
 - Command palette, guided tours, dark/light theme.
 
+## Screenshots
+
+Public worker-facing flow (Portuguese UI, dark theme by default) with fictitious inputs and seed data.
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/02-calculadora-trabalhador-desktop.png" alt="Severance calculator, step 1 of 7: how the job ended"><br><sub>Severance calculator, step 1 of 7: how the job ended.</sub></td>
+    <td width="50%"><img src="docs/screenshots/03-resultado-trabalhador-desktop.png" alt="Severance result: value range with itemised amounts and legal citations"><br><sub>Severance result: value range with itemised amounts and legal citations.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/04-calculadora-horas-extras-desktop.png" alt="Overtime calculator form (fictitious salary and hours)"><br><sub>Overtime calculator form (fictitious salary and hours).</sub></td>
+    <td></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td width="25%"><img src="docs/screenshots/02-calculadora-trabalhador-mobile.png" alt="Severance calculator on mobile"><br><sub>Severance calculator on mobile.</sub></td>
+    <td width="25%"><img src="docs/screenshots/03-resultado-trabalhador-mobile.png" alt="Severance result on mobile"><br><sub>Severance result on mobile.</sub></td>
+  </tr>
+</table>
+
 ## Architecture
 
 System context: this repo is the browser client of the labor-calculations backend.
