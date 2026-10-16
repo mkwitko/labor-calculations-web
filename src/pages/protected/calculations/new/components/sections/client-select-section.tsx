@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useListClients } from '@/http/generated/client/client'
-import type { ListClients200DataItem } from '@/http/generated/lexlaboral-server.schemas'
+import type { ListClients200DataItem } from '@/http/generated/labor-calculations-api.schemas'
 import { ExternalLinkIcon, SearchIcon, UserIcon, XIcon } from 'lucide-react'
 import { useState } from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'

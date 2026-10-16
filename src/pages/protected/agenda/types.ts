@@ -1,4 +1,4 @@
-import type { ListAgendaEvents200DataItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListAgendaEvents200DataItem } from "@/http/generated/labor-calculations-api.schemas";
 
 export type AgendaEventData = ListAgendaEvents200DataItem;
 

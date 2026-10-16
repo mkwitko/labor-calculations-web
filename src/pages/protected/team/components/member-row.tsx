@@ -17,7 +17,7 @@ import {
   ROLE_LABELS,
   type OrgRole,
 } from "@/hooks/use-organizations";
-import type { ListOrganizationMembers200DataItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListOrganizationMembers200DataItem } from "@/http/generated/labor-calculations-api.schemas";
 import { Trash2Icon } from "lucide-react";
 
 /**

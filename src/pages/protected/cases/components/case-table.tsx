@@ -15,7 +15,7 @@ import {
   useDeleteCase,
   useRestoreCase,
 } from "@/http/generated/case/case";
-import type { ListCases200DataItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListCases200DataItem } from "@/http/generated/labor-calculations-api.schemas";
 import { queryClient } from "@/lib/react-query";
 import { formatDate } from "@/utils/value-format";
 import { FolderOpenIcon, SearchXIcon, TrashIcon } from "lucide-react";

@@ -8,8 +8,8 @@ import {
 import type {
   GetCaseTimeline200DataItem,
   ListNotes200Item,
-} from "@/http/generated/lexlaboral-server.schemas";
-import { GetCaseTimeline200DataItemKind } from "@/http/generated/lexlaboral-server.schemas";
+} from "@/http/generated/labor-calculations-api.schemas";
+import { GetCaseTimeline200DataItemKind } from "@/http/generated/labor-calculations-api.schemas";
 import {
   getListNotesQueryKey,
   useCreateNote,

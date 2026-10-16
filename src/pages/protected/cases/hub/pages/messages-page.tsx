@@ -16,7 +16,7 @@ import {
   useListMessages,
   useMarkMessagesRead,
 } from "@/http/generated/message/message";
-import type { ListMessages200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListMessages200 } from "@/http/generated/labor-calculations-api.schemas";
 import { useCaseHub } from "../case-hub-layout";
 
 /** Sem stream de pé a página se mantém correta por polling. */

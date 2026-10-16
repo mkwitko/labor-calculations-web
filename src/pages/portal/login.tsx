@@ -6,7 +6,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
-import type { SignInClient201OrganizationsItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { SignInClient201OrganizationsItem } from "@/http/generated/labor-calculations-api.schemas";
 import {
   getCheckClientAuthQueryKey,
   useCheckClientAuth,

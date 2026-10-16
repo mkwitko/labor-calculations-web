@@ -16,7 +16,7 @@ import {
   useDeleteLaborCalculation,
   useRestoreLaborCalculation,
 } from '@/http/generated/labor-calculation/labor-calculation'
-import type { ListLaborCalculation200DataItem } from '@/http/generated/lexlaboral-server.schemas'
+import type { ListLaborCalculation200DataItem } from '@/http/generated/labor-calculations-api.schemas'
 import { queryClient } from '@/lib/react-query'
 import {
   formatCurrency,

@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { useListClientCases } from "@/http/generated/client-portal/client-portal";
-import type { ListClientCases200CasesItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListClientCases200CasesItem } from "@/http/generated/labor-calculations-api.schemas";
 import { formatDate } from "@/utils/value-format";
 import {
   AlertCircleIcon,

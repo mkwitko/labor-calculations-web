@@ -189,7 +189,7 @@ export default function PortalAcceptInvite() {
 
             {/*
               Texto fixo quando não há outra conta de portal: quem também é
-              advogado no JurisPro estranha ter senha pedida de novo, e o portal
+              advogado no LexLaboral estranha ter senha pedida de novo, e o portal
               é login separado mesmo. Fixo de propósito — condicionar a existir
               conta de advogado com este e-mail contaria isso a quem tem o link.
             */}
@@ -198,7 +198,7 @@ export default function PortalAcceptInvite() {
               <p className="text-xs text-muted-foreground">
                 {isLinking
                   ? "Você já usa o portal com este e-mail em outro escritório. Digite essa mesma senha: um login só passa a valer para todos."
-                  : "A senha do portal é separada de qualquer outra senha que você use no JurisPro."}
+                  : "A senha do portal é separada de qualquer outra senha que você use no LexLaboral."}
               </p>
             </div>
 

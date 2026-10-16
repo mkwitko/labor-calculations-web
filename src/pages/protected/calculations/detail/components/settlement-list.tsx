@@ -1,7 +1,7 @@
 import { ConfirmButton } from "@/components/confirm-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { ListSettlements200Item } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListSettlements200Item } from "@/http/generated/labor-calculations-api.schemas";
 import {
   getListSettlementsQueryKey,
   useDeleteSettlement,

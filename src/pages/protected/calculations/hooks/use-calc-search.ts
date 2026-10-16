@@ -1,4 +1,4 @@
-import type { ListLaborCalculation200DataItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListLaborCalculation200DataItem } from "@/http/generated/labor-calculations-api.schemas";
 import Fuse from "fuse.js";
 import { useMemo } from "react";
 

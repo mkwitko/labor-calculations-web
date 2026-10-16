@@ -43,7 +43,7 @@ import {
   useCreateHearing,
   useDeleteHearing,
 } from "@/http/generated/hearing/hearing";
-import type { GetCase200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetCase200 } from "@/http/generated/labor-calculations-api.schemas";
 
 // Hearings/deadlines feed the Agenda (which queries the "list all" endpoints),
 // so any change here must refresh those caches too — otherwise the Agenda is

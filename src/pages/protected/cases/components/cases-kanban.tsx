@@ -2,7 +2,7 @@ import { BriefcaseIcon, UserIcon } from "lucide-react";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useListCases } from "@/http/generated/case/case";
-import type { ListCases200DataItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListCases200DataItem } from "@/http/generated/labor-calculations-api.schemas";
 import { cn } from "@/lib/utils";
 import { ALL_PHASES, CASE_PHASE_COLORS, CASE_PHASE_LABELS } from "../utils/case-phase";
 

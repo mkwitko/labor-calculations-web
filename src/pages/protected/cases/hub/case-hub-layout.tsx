@@ -42,7 +42,7 @@ import {
   useDeleteCase,
   useGetCase,
 } from "@/http/generated/case/case";
-import type { GetCase200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetCase200 } from "@/http/generated/labor-calculations-api.schemas";
 import { useGetUnreadMessageCount } from "@/http/generated/message/message";
 import { queryClient } from "@/lib/react-query";
 import { cn } from "@/lib/utils";

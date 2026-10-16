@@ -262,24 +262,24 @@ html, body, #root {
 
 /* Popover dos tours (driver.js). O padrão da biblioteca é ~300px, estreito
    demais para explicação jurídica: o texto virava três palavras por linha e o
-   tour parecia enxuto. `popoverClass: "jurispro-tour"` em use-product-tour.ts. */
-.driver-popover.jurispro-tour {
+   tour parecia enxuto. `popoverClass: "lexlaboral-tour"` em use-product-tour.ts. */
+.driver-popover.lexlaboral-tour {
   max-width: 30rem;
   min-width: 20rem;
   padding: 1.25rem 1.375rem;
 }
-.driver-popover.jurispro-tour .driver-popover-title {
+.driver-popover.lexlaboral-tour .driver-popover-title {
   font-size: 1.0625rem;
   line-height: 1.35;
   margin-bottom: 0.5rem;
 }
-.driver-popover.jurispro-tour .driver-popover-description {
+.driver-popover.lexlaboral-tour .driver-popover-description {
   font-size: 0.9375rem;
   line-height: 1.6;
 }
 /* Em telefone a largura é a da tela, não a do conteúdo. */
 @media (max-width: 767px) {
-  .driver-popover.jurispro-tour {
+  .driver-popover.lexlaboral-tour {
     max-width: calc(100vw - 2rem);
     min-width: 0;
     padding: 1rem 1.125rem;

@@ -1,4 +1,4 @@
-# LexLaboral | Server
+# Labor Calculations API
 
 Version: 2.0.0
 

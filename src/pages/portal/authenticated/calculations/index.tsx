@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { useListClientCalculations } from "@/http/generated/client-portal/client-portal";
-import type { ListClientCalculations200DataItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListClientCalculations200DataItem } from "@/http/generated/labor-calculations-api.schemas";
 import {
   formatCurrency,
   formatDate,

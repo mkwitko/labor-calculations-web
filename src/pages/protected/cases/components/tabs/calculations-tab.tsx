@@ -30,7 +30,7 @@ import {
   useUnlinkCalculationFromCase,
 } from "@/http/generated/case/case";
 import { useListLaborCalculation } from "@/http/generated/labor-calculation/labor-calculation";
-import type { GetCase200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetCase200 } from "@/http/generated/labor-calculations-api.schemas";
 import { queryClient } from "@/lib/react-query";
 import {
   formatCurrency,

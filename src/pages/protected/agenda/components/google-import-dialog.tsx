@@ -26,7 +26,7 @@ import { useListCases } from "@/http/generated/case/case";
 import type {
   ImportGoogleCalendarEventsBodyEventsItem,
   ListGoogleCalendarEvents200DataItem,
-} from "@/http/generated/lexlaboral-server.schemas";
+} from "@/http/generated/labor-calculations-api.schemas";
 import { queryClient } from "@/lib/react-query";
 import { formatDateTime } from "@/utils/value-format";
 

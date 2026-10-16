@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import type {
   GetReferralSummary200DataNextTier,
   GetReferralSummary200DataTier,
-} from "@/http/generated/lexlaboral-server.schemas";
+} from "@/http/generated/labor-calculations-api.schemas";
 
 const TIERS = [
   { label: "Bronze", from: 1, percentOff: 10 },

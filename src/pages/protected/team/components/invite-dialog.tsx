@@ -22,7 +22,7 @@ import {
   type OrgRole,
 } from "@/hooks/use-organizations";
 import { formatBRL, usePlans } from "@/hooks/use-plans";
-import type { CreateInvite201Data } from "@/http/generated/lexlaboral-server.schemas";
+import type { CreateInvite201Data } from "@/http/generated/labor-calculations-api.schemas";
 import {
   getListInvitesQueryKey,
   useCreateInvite,

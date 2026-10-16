@@ -1,7 +1,7 @@
 # Reestruturação de navegação e arquitetura da informação
 
 Data: 2026-08-05
-Repos: `jurispro-front` (principal), `jurispro-back` (uma mudança aditiva)
+Repos: `labor-calculations-web` (principal), `labor-calculations-api` (uma mudança aditiva)
 
 ## Problema
 
@@ -83,7 +83,7 @@ Correção funcional:
     rodam client-side sobre a página de 20 itens (`useCalcSearch(items)`),
     enquanto a paginação é cursor server-side. Buscar um cliente que está na
     página 3 devolve zero resultados. A causa raiz é o backend:
-    `jurispro-back/src/http/controllers/labor-calculation/list-labor-calculations.ts:31-34`
+    `labor-calculations-api/src/http/controllers/labor-calculation/list-labor-calculations.ts:31-34`
     aceita só `limit`, `cursor` e `clientId`. `list-cases.ts:47-52` faz certo e
     serve de referência.
 13. Mesmo arquivo, rodapé: `{filtered.length} resultados` é contagem da página e
@@ -273,7 +273,7 @@ nome com a `/agenda` global.
 
 ### Lista de cálculos
 
-**Backend** — `jurispro-back/src/http/controllers/labor-calculation/list-labor-calculations.ts`
+**Backend** — `labor-calculations-api/src/http/controllers/labor-calculation/list-labor-calculations.ts`
 ganha três query params opcionais, espelhando `list-cases.ts:47-52`:
 
 - `search` — `contains` em `clientName`, `mode: 'insensitive'`

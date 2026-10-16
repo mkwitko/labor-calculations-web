@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetClientTimeline } from "@/http/generated/client-portal/client-portal";
-import type { GetClientTimelineType } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetClientTimelineType } from "@/http/generated/labor-calculations-api.schemas";
 import { formatDateTime } from "@/utils/value-format";
 import {
   BriefcaseIcon,

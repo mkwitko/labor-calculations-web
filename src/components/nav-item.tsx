@@ -1,4 +1,4 @@
-import type { GetAuthenticatedUser200Data } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetAuthenticatedUser200Data } from "@/http/generated/labor-calculations-api.schemas";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";

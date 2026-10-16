@@ -1,4 +1,4 @@
-import type { GetLaborCalculation200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetLaborCalculation200 } from "@/http/generated/labor-calculations-api.schemas";
 import { formatCurrency } from "@/utils/value-format";
 import { BreakdownRow } from "./breakdown-row";
 import { V3Breakdown } from "./v3-breakdown";

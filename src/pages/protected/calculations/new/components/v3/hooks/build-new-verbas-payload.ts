@@ -2,7 +2,7 @@ import type {
   CreateLaborCalculationV3BodyCustomVerbasItem,
   CreateLaborCalculationV3BodySalaryDifference,
   CreateLaborCalculationV3BodyUnpaidSalariesItem,
-} from "@/http/generated/lexlaboral-server.schemas";
+} from "@/http/generated/labor-calculations-api.schemas";
 import type { V3CalculationFormData } from "../v3-calculation-schema";
 
 const toNumber = (value: string) => Number(value.replace(",", "."));

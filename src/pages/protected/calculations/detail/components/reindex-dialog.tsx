@@ -17,7 +17,7 @@ import {
 
 import { getGetLaborCalculationQueryKey } from "@/http/generated/labor-calculation/labor-calculation";
 import { useReindexLaborCalculation } from "@/http/generated/labor-calculation-v3/labor-calculation-v3";
-import type { ReindexLaborCalculation200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { ReindexLaborCalculation200 } from "@/http/generated/labor-calculations-api.schemas";
 
 import { queryClient } from "@/lib/react-query";
 

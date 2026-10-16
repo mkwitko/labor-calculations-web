@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useListTemplatePlaceholders } from "@/http/generated/document-template/document-template";
-import type { ListTemplatePlaceholders200PlaceholdersItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListTemplatePlaceholders200PlaceholdersItem } from "@/http/generated/labor-calculations-api.schemas";
 
 const GROUP_LABELS: Record<string, string> = {
   cliente: "Cliente",

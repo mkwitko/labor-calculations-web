@@ -3,7 +3,7 @@ import "driver.js/dist/driver.css";
 import { useCallback } from "react";
 import { mobileNav } from "./use-mobile-nav";
 
-const SEEN_KEY = "jurispro:tour:v1";
+const SEEN_KEY = "lexlaboral:tour:v1";
 
 /** True on phone-width viewports (matches the `md` Tailwind breakpoint). */
 function isMobile() {
@@ -141,7 +141,7 @@ function makeTour(
     prevBtnText: "Anterior",
     doneBtnText,
     progressText: "{{current}} de {{total}}",
-    popoverClass: "jurispro-tour",
+    popoverClass: "lexlaboral-tour",
     steps,
     ...(isMobile()
       ? {
@@ -252,7 +252,7 @@ function runWelcome() {
 // ── Wizard tour (cálculo) ───────────────────────────────────────────────
 // v2: o texto foi reescrito por extenso (v1 era enxuto demais para explicação
 // jurídica). Chave nova faz o tour reaparecer para quem já dispensou a v1.
-const WIZARD_SEEN_KEY = "jurispro:tour:wizard:v2";
+const WIZARD_SEEN_KEY = "lexlaboral:tour:wizard:v2";
 
 function buildWizardTour() {
   return makeTour(
@@ -292,7 +292,7 @@ function buildWizardTour() {
 }
 
 // ── Case hub tour (dentro de um caso) ───────────────────────────────────
-const CASE_HUB_SEEN_KEY = "jurispro:tour:case-hub:v1";
+const CASE_HUB_SEEN_KEY = "lexlaboral:tour:case-hub:v1";
 
 function buildCaseHubTour() {
   return makeTour(
@@ -328,7 +328,7 @@ function buildCaseHubTour() {
 }
 
 // ── Templates / biblioteca de documentos ────────────────────────────────
-const TEMPLATES_SEEN_KEY = "jurispro:tour:templates:v1";
+const TEMPLATES_SEEN_KEY = "lexlaboral:tour:templates:v1";
 
 function buildTemplatesTour() {
   return makeTour(
@@ -356,7 +356,7 @@ function buildTemplatesTour() {
 }
 
 // ── Agenda ──────────────────────────────────────────────────────────────
-const AGENDA_SEEN_KEY = "jurispro:tour:agenda:v1";
+const AGENDA_SEEN_KEY = "lexlaboral:tour:agenda:v1";
 
 function buildAgendaTour() {
   return makeTour(

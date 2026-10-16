@@ -26,7 +26,7 @@ import {
   useCreateDocumentTemplate,
   useValidateDocumentTemplate,
 } from "@/http/generated/document-template/document-template";
-import type { CreateDocumentTemplateBodyType } from "@/http/generated/lexlaboral-server.schemas";
+import type { CreateDocumentTemplateBodyType } from "@/http/generated/labor-calculations-api.schemas";
 import { AXIOS_INSTANCE } from "@/lib/api";
 import { queryClient } from "@/lib/react-query";
 import { DOCX_MIME, MAX_FILE_BYTES, TYPE_LABELS } from "../shared";

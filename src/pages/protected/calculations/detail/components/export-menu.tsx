@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useGenerateDocument } from "@/http/generated/labor-calculation/labor-calculation";
 import { useListDocumentTemplates } from "@/http/generated/document-template/document-template";
-import type { GetLaborCalculation200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetLaborCalculation200 } from "@/http/generated/labor-calculations-api.schemas";
 import { exportLiquidationXlsx } from "../export-liquidation-xlsx";
 import type { ResultV3 } from "../types";
 

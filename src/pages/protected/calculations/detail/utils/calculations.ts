@@ -1,4 +1,4 @@
-import type { GetLaborCalculation200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetLaborCalculation200 } from "@/http/generated/labor-calculations-api.schemas";
 
 export type CalcGroup = {
   title: string;

@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { GetCase200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetCase200 } from "@/http/generated/labor-calculations-api.schemas";
 import { formatCurrency, formatDate } from "@/utils/value-format";
 import { ExternalLinkIcon, HandshakeIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";

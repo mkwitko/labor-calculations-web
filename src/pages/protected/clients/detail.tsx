@@ -21,7 +21,7 @@ import {
   useUpdateClient,
 } from "@/http/generated/client/client";
 import { useListLaborCalculation } from "@/http/generated/labor-calculation/labor-calculation";
-import { UpdateClientBody } from "@/http/generated/lexlaboral-server.schemas";
+import { UpdateClientBody } from "@/http/generated/labor-calculations-api.schemas";
 import { queryClient } from "@/lib/react-query";
 import { formatCurrency, formatDate, getStatusLabel, getTerminationTypeLabel } from "@/utils/value-format";
 import { ArrowLeftIcon, CheckIcon, PencilIcon, TrashIcon, XIcon } from "lucide-react";

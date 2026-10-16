@@ -2,7 +2,7 @@ import { useListBillingPlans } from "@/http/generated/billing/billing";
 import type {
   ListBillingPlans200DataItem,
   ListBillingPlans200DataItemCode,
-} from "@/http/generated/lexlaboral-server.schemas";
+} from "@/http/generated/labor-calculations-api.schemas";
 
 /**
  * O escritório assina um **plano com teto de pessoas**, e o plano vive no

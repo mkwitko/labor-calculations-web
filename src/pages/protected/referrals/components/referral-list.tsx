@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { EmptyState } from "@/components/empty-state";
-import type { GetReferralSummary200DataReferralsItem } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetReferralSummary200DataReferralsItem } from "@/http/generated/labor-calculations-api.schemas";
 import { UsersIcon } from "lucide-react";
 
 const STATUS_LABEL: Record<string, string> = {

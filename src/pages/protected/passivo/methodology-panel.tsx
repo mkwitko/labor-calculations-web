@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/collapsible";
 
 /**
- * Espelho em prosa de `buildEmployerResult` (jurispro-back). Se a regra de
+ * Espelho em prosa de `buildEmployerResult` (labor-calculations-api). Se a regra de
  * composição mudar lá, este texto muda junto.
  */
 export function MethodologyPanel() {

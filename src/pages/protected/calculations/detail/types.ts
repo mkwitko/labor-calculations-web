@@ -1,7 +1,7 @@
 import type {
   GetLaborCalculation200,
   GetLaborCalculation200FgtsEntriesItem,
-} from "@/http/generated/lexlaboral-server.schemas";
+} from "@/http/generated/labor-calculations-api.schemas";
 
 export const CLT_CITATIONS: Record<string, string> = {
   priorNotice: "Art. 487 CLT",

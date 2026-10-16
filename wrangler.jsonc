@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "jurispro-front",
+  "name": "labor-calculations-web",
   "compatibility_date": "2025-05-01",
   // Existe por um motivo só: o proxy reverso do PostHog em `/lxl/*`. Todo o
   // resto continua sendo asset estático — `run_worker_first` lista apenas esse

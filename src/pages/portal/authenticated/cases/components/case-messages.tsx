@@ -18,7 +18,7 @@ import {
   useListClientMessages,
   useMarkClientMessagesRead,
 } from "@/http/generated/client-portal/client-portal";
-import type { ListClientMessages200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { ListClientMessages200 } from "@/http/generated/labor-calculations-api.schemas";
 
 const POLL_INTERVAL_MS = 15_000;
 

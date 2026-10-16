@@ -3,7 +3,7 @@ import {
   useListLaborCalculation,
   useUpdateLaborCalculationStatus,
 } from "@/http/generated/labor-calculation/labor-calculation";
-import { ListLaborCalculation200, UpdateLaborCalculationStatusBodyStatus } from "@/http/generated/lexlaboral-server.schemas";
+import { ListLaborCalculation200, UpdateLaborCalculationStatusBodyStatus } from "@/http/generated/labor-calculations-api.schemas";
 import { cn } from "@/lib/utils";
 import { ListIcon, RefreshCwIcon } from "lucide-react";
 import { useMemo, useState } from "react";

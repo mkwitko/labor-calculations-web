@@ -20,7 +20,7 @@ import {
   useUpdateCase,
 } from "@/http/generated/case/case";
 import { useListClients } from "@/http/generated/client/client";
-import { GetCase200 } from "@/http/generated/lexlaboral-server.schemas";
+import { GetCase200 } from "@/http/generated/labor-calculations-api.schemas";
 import { queryClient } from "@/lib/react-query";
 import { formatDate } from "@/utils/value-format";
 import { CheckIcon, ChevronsUpDownIcon, PencilIcon, SearchIcon, UserIcon, XIcon } from "lucide-react";

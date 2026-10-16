@@ -1,5 +1,5 @@
 
-import { ListLaborCalculation200DataItem } from '@/http/generated/lexlaboral-server.schemas'
+import { ListLaborCalculation200DataItem } from '@/http/generated/labor-calculations-api.schemas'
 import { formatCurrency, formatDate, getTerminationTypeLabel } from '@/utils/value-format'
 import { ArrowRightIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'

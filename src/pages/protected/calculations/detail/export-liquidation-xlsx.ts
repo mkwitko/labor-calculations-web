@@ -1,4 +1,4 @@
-import type { GetLaborCalculation200 } from "@/http/generated/lexlaboral-server.schemas";
+import type { GetLaborCalculation200 } from "@/http/generated/labor-calculations-api.schemas";
 import type { ResultV3 } from "./types";
 
 function fmtDate(v: string | null | undefined): string {

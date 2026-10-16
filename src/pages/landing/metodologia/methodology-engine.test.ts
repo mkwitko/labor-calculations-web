@@ -7,7 +7,7 @@ import methodologyHtml from "./methodology.html?raw";
  * recalcular no navegador. Duas cópias da mesma conta divergem em silêncio: o
  * demonstrativo público mostraria um número e o app, outro.
  *
- * Os valores esperados abaixo saíram do motor de verdade (`jurispro-back`,
+ * Os valores esperados abaixo saíram do motor de verdade (`labor-calculations-api`,
  * `calculateLaborV3` com a tabela de índices padrão), para o mesmo cenário.
  * Quando o motor mudar e o porte não acompanhar, este teste quebra.
  */
