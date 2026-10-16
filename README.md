@@ -16,23 +16,27 @@ Web client for a Brazilian labor-law case management and settlement calculator: 
 
 ## Screenshots
 
-Public worker-facing flow (Portuguese UI, dark theme by default) with fictitious inputs and seed data.
+Portuguese UI with fictitious inputs and seed data (made-up lawyer, client and case). Worker-facing calculator shots use the dark theme; the rest are light.
 
 <table>
   <tr>
+    <td width="50%"><img src="docs/screenshots/01-landing-desktop.png" alt="Landing page (light theme)"><br><sub>Landing page (light theme).</sub></td>
     <td width="50%"><img src="docs/screenshots/02-calculadora-trabalhador-desktop.png" alt="Severance calculator, step 1 of 7: how the job ended"><br><sub>Severance calculator, step 1 of 7: how the job ended.</sub></td>
-    <td width="50%"><img src="docs/screenshots/03-resultado-trabalhador-desktop.png" alt="Severance result: value range with itemised amounts and legal citations"><br><sub>Severance result: value range with itemised amounts and legal citations.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/screenshots/04-calculadora-horas-extras-desktop.png" alt="Overtime calculator form (fictitious salary and hours)"><br><sub>Overtime calculator form (fictitious salary and hours).</sub></td>
-    <td></td>
+    <td width="50%"><img src="docs/screenshots/03-resultado-trabalhador-desktop.png" alt="Severance result: value range with itemised amounts and legal citations"><br><sub>Severance result: value range with itemised amounts and legal citations.</sub></td>
+    <td width="50%"><img src="docs/screenshots/05-painel-desktop.png" alt="Lawyer dashboard: next steps, counters and upcoming deadline"><br><sub>Lawyer dashboard: next steps, counters and upcoming deadline.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/08-caso-visao-geral-desktop.png" alt="Case overview tab"><br><sub>Case overview tab.</sub></td>
+    <td width="50%"><img src="docs/screenshots/09-caso-autos-andamentos-desktop.png" alt="Case Autos tab with six movements"><br><sub>Case Autos tab with six movements.</sub></td>
   </tr>
 </table>
 
 <table>
   <tr>
-    <td width="25%"><img src="docs/screenshots/02-calculadora-trabalhador-mobile.png" alt="Severance calculator on mobile"><br><sub>Severance calculator on mobile.</sub></td>
-    <td width="25%"><img src="docs/screenshots/03-resultado-trabalhador-mobile.png" alt="Severance result on mobile"><br><sub>Severance result on mobile.</sub></td>
+    <td width="25%"><img src="docs/screenshots/01-landing-mobile.png" alt="Landing page on mobile"><br><sub>Landing page on mobile.</sub></td>
+    <td width="25%"><img src="docs/screenshots/08-caso-visao-geral-mobile.png" alt="Case overview on mobile"><br><sub>Case overview on mobile.</sub></td>
   </tr>
 </table>
 
