@@ -45,6 +45,7 @@ Portuguese UI with fictitious inputs and seed data (made-up lawyer, client and c
 System context: this repo is the browser client of the labor-calculations backend.
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"background":"#0B0C0E","primaryColor":"#15171B","primaryTextColor":"#E6E8EB","primaryBorderColor":"#9AA0A8","secondaryColor":"#1E2126","tertiaryColor":"#1E2126","lineColor":"#9AA0A8","textColor":"#E6E8EB","clusterBkg":"#101216","clusterBorder":"#2A2E35","edgeLabelBackground":"#0B0C0E","actorBkg":"#15171B","actorBorder":"#9AA0A8","actorTextColor":"#E6E8EB","signalColor":"#9AA0A8","signalTextColor":"#E6E8EB","noteBkgColor":"#1E2126","noteTextColor":"#E6E8EB","noteBorderColor":"#2A2E35","fontFamily":"ui-monospace, SFMono-Regular, Menlo, monospace","fontSize":"13px"}, "flowchart":{"curve":"linear","nodeSpacing":40,"rankSpacing":48,"padding":12}}}%%
 flowchart LR
   Lawyer([Law firm user]) --> Web
   Worker([Worker / HR visitor]) --> Web
@@ -63,6 +64,7 @@ flowchart LR
 Layers inside this repo:
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"background":"#0B0C0E","primaryColor":"#15171B","primaryTextColor":"#E6E8EB","primaryBorderColor":"#9AA0A8","secondaryColor":"#1E2126","tertiaryColor":"#1E2126","lineColor":"#9AA0A8","textColor":"#E6E8EB","clusterBkg":"#101216","clusterBorder":"#2A2E35","edgeLabelBackground":"#0B0C0E","actorBkg":"#15171B","actorBorder":"#9AA0A8","actorTextColor":"#E6E8EB","signalColor":"#9AA0A8","signalTextColor":"#E6E8EB","noteBkgColor":"#1E2126","noteTextColor":"#E6E8EB","noteBorderColor":"#2A2E35","fontFamily":"ui-monospace, SFMono-Regular, Menlo, monospace","fontSize":"13px"}, "flowchart":{"curve":"linear","nodeSpacing":40,"rankSpacing":48,"padding":12}}}%%
 flowchart TD
   Router["Lazy routes, 4 layout groups<br/>src/router/index.tsx"] --> Pages["Pages: landing, public, portal, protected<br/>src/pages"]
   Pages --> Comp["Shared components, gates, error boundaries<br/>src/components"]
@@ -76,6 +78,7 @@ flowchart TD
 Main flow, a public calculation (`src/pages/public/calculadora`):
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"background":"#0B0C0E","primaryColor":"#15171B","primaryTextColor":"#E6E8EB","primaryBorderColor":"#9AA0A8","secondaryColor":"#1E2126","tertiaryColor":"#1E2126","lineColor":"#9AA0A8","textColor":"#E6E8EB","clusterBkg":"#101216","clusterBorder":"#2A2E35","edgeLabelBackground":"#0B0C0E","actorBkg":"#15171B","actorBorder":"#9AA0A8","actorTextColor":"#E6E8EB","signalColor":"#9AA0A8","signalTextColor":"#E6E8EB","noteBkgColor":"#1E2126","noteTextColor":"#E6E8EB","noteBorderColor":"#2A2E35","fontFamily":"ui-monospace, SFMono-Regular, Menlo, monospace","fontSize":"13px"}, "flowchart":{"curve":"linear","nodeSpacing":40,"rankSpacing":48,"padding":12}}}%%
 sequenceDiagram
   participant V as Visitor
   participant W as Wizard (steps.ts)
